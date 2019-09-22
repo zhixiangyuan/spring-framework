@@ -32,16 +32,20 @@ import org.springframework.util.Assert;
  * @author Rob Harrop
  * @author Juergen Hoeller
  * @author Rick Evans
- * @since 2.0
  * @see BeansDtdResolver
  * @see PluggableSchemaResolver
+ * @since 2.0
  */
 public class DelegatingEntityResolver implements EntityResolver {
 
-	/** Suffix for DTD files. */
+	/**
+	 * Suffix for DTD files.
+	 */
 	public static final String DTD_SUFFIX = ".dtd";
 
-	/** Suffix for schema definition files. */
+	/**
+	 * Suffix for schema definition files.
+	 */
 	public static final String XSD_SUFFIX = ".xsd";
 
 
@@ -55,10 +59,12 @@ public class DelegatingEntityResolver implements EntityResolver {
 	 * a default {@link BeansDtdResolver} and a default {@link PluggableSchemaResolver}.
 	 * <p>Configures the {@link PluggableSchemaResolver} with the supplied
 	 * {@link ClassLoader}.
+	 *
 	 * @param classLoader the ClassLoader to use for loading
-	 * (can be {@code null}) to use the default ClassLoader)
+	 *                    (can be {@code null}) to use the default ClassLoader)
 	 */
 	public DelegatingEntityResolver(@Nullable ClassLoader classLoader) {
+		// 使用默认实现
 		this.dtdResolver = new BeansDtdResolver();
 		this.schemaResolver = new PluggableSchemaResolver(classLoader);
 	}
@@ -66,10 +72,12 @@ public class DelegatingEntityResolver implements EntityResolver {
 	/**
 	 * Create a new DelegatingEntityResolver that delegates to
 	 * the given {@link EntityResolver EntityResolvers}.
-	 * @param dtdResolver the EntityResolver to resolve DTDs with
+	 *
+	 * @param dtdResolver    the EntityResolver to resolve DTDs with
 	 * @param schemaResolver the EntityResolver to resolve XML schemas with
 	 */
 	public DelegatingEntityResolver(EntityResolver dtdResolver, EntityResolver schemaResolver) {
+		// 使用自定义实现
 		Assert.notNull(dtdResolver, "'dtdResolver' is required");
 		Assert.notNull(schemaResolver, "'schemaResolver' is required");
 		this.dtdResolver = dtdResolver;
@@ -81,12 +89,22 @@ public class DelegatingEntityResolver implements EntityResolver {
 	@Nullable
 	public InputSource resolveEntity(@Nullable String publicId, @Nullable String systemId)
 			throws SAXException, IOException {
+		// XSD 验证模式
+		// 	- publicId：null
+		//  - systemId：http://www.springframework.org/schema/beans/spring-beans.xsd
+		// DTD 验证模式
+		//  - publicId：-//SPRING//DTD BEAN 2.0//EN
+		//  - systemId：http://www.springframework.org/dtd/spring-beans.dtd
 
 		if (systemId != null) {
+			// DTD 模式
 			if (systemId.endsWith(DTD_SUFFIX)) {
+				// 如果是 DTD 验证模式，则使用 BeansDtdResolver 来进行解析
 				return this.dtdResolver.resolveEntity(publicId, systemId);
 			}
+			// XSD 模式
 			else if (systemId.endsWith(XSD_SUFFIX)) {
+				// 如果是 XSD 验证模式，则使用 PluggableSchemaResolver 来进行解析
 				return this.schemaResolver.resolveEntity(publicId, systemId);
 			}
 		}

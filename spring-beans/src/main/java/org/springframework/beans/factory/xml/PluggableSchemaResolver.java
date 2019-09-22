@@ -50,6 +50,8 @@ import org.springframework.util.CollectionUtils;
  *
  * <p>The pattern for the mapping files can be overridden using the
  * {@link #PluggableSchemaResolver(ClassLoader, String)} constructor.
+ * <p>
+ * 读取 classpath 下的所有 "META-INF/spring.schemas" 成一个 namespaceURI 与 Schema 文件地址的 map
  *
  * @author Rob Harrop
  * @author Juergen Hoeller
@@ -60,6 +62,8 @@ public class PluggableSchemaResolver implements EntityResolver {
 	/**
 	 * The location of the file that defines schema mappings.
 	 * Can be present in multiple JAR files.
+	 * <p>
+	 * 默认 {@link #schemaMappingsLocation} 地址
 	 */
 	public static final String DEFAULT_SCHEMA_MAPPINGS_LOCATION = "META-INF/spring.schemas";
 
@@ -68,10 +72,16 @@ public class PluggableSchemaResolver implements EntityResolver {
 
 	@Nullable
 	private final ClassLoader classLoader;
-
+	/**
+	 * Schema 文件地址
+	 */
 	private final String schemaMappingsLocation;
 
-	/** Stores the mapping of schema URL -> local schema path. */
+	/**
+	 * Stores the mapping of schema URL -> local schema path.
+	 *
+	 * namespaceURI 与 Schema 文件地址的映射集合
+	 */
 	@Nullable
 	private volatile Map<String, String> schemaMappings;
 
@@ -79,8 +89,9 @@ public class PluggableSchemaResolver implements EntityResolver {
 	/**
 	 * Loads the schema URL -> schema file location mappings using the default
 	 * mapping file pattern "META-INF/spring.schemas".
+	 *
 	 * @param classLoader the ClassLoader to use for loading
-	 * (can be {@code null}) to use the default ClassLoader)
+	 *                    (can be {@code null}) to use the default ClassLoader)
 	 * @see PropertiesLoaderUtils#loadAllProperties(String, ClassLoader)
 	 */
 	public PluggableSchemaResolver(@Nullable ClassLoader classLoader) {
@@ -91,10 +102,11 @@ public class PluggableSchemaResolver implements EntityResolver {
 	/**
 	 * Loads the schema URL -> schema file location mappings using the given
 	 * mapping file pattern.
-	 * @param classLoader the ClassLoader to use for loading
-	 * (can be {@code null}) to use the default ClassLoader)
+	 *
+	 * @param classLoader            the ClassLoader to use for loading
+	 *                               (can be {@code null}) to use the default ClassLoader)
 	 * @param schemaMappingsLocation the location of the file that defines schema mappings
-	 * (must not be empty)
+	 *                               (must not be empty)
 	 * @see PropertiesLoaderUtils#loadAllProperties(String, ClassLoader)
 	 */
 	public PluggableSchemaResolver(@Nullable ClassLoader classLoader, String schemaMappingsLocation) {
@@ -113,14 +125,17 @@ public class PluggableSchemaResolver implements EntityResolver {
 		}
 
 		if (systemId != null) {
+			// 获取 Resource 所在位置
 			String resourceLocation = getSchemaMappings().get(systemId);
 			if (resourceLocation == null && systemId.startsWith("https:")) {
 				// Retrieve canonical http schema mapping even for https declaration
 				resourceLocation = getSchemaMappings().get("http:" + systemId.substring(6));
 			}
 			if (resourceLocation != null) {
+				// 创建 ClassPathResource
 				Resource resource = new ClassPathResource(resourceLocation, this.classLoader);
 				try {
+					// 创建 InputSource 对象，并设置 publicId、systemId 属性
 					InputSource source = new InputSource(resource.getInputStream());
 					source.setPublicId(publicId);
 					source.setSystemId(systemId);
@@ -128,8 +143,7 @@ public class PluggableSchemaResolver implements EntityResolver {
 						logger.trace("Found XML schema [" + systemId + "] in classpath: " + resourceLocation);
 					}
 					return source;
-				}
-				catch (FileNotFoundException ex) {
+				} catch (FileNotFoundException ex) {
 					if (logger.isDebugEnabled()) {
 						logger.debug("Could not find XML schema [" + systemId + "]: " + resource, ex);
 					}
@@ -146,6 +160,7 @@ public class PluggableSchemaResolver implements EntityResolver {
 	 */
 	private Map<String, String> getSchemaMappings() {
 		Map<String, String> schemaMappings = this.schemaMappings;
+		// 双重检查锁，实现 schemaMappings 单例
 		if (schemaMappings == null) {
 			synchronized (this) {
 				schemaMappings = this.schemaMappings;
@@ -154,6 +169,7 @@ public class PluggableSchemaResolver implements EntityResolver {
 						logger.trace("Loading schema mappings from [" + this.schemaMappingsLocation + "]");
 					}
 					try {
+						// 以 Properties 的方式，读取 schemaMappingLocation
 						Properties mappings =
 								PropertiesLoaderUtils.loadAllProperties(this.schemaMappingsLocation, this.classLoader);
 						if (logger.isTraceEnabled()) {
@@ -162,8 +178,7 @@ public class PluggableSchemaResolver implements EntityResolver {
 						schemaMappings = new ConcurrentHashMap<>(mappings.size());
 						CollectionUtils.mergePropertiesIntoMap(mappings, schemaMappings);
 						this.schemaMappings = schemaMappings;
-					}
-					catch (IOException ex) {
+					} catch (IOException ex) {
 						throw new IllegalStateException(
 								"Unable to load schema mappings from location [" + this.schemaMappingsLocation + "]", ex);
 					}

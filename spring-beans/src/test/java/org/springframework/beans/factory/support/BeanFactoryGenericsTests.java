@@ -165,7 +165,7 @@ public class BeanFactoryGenericsTests {
 
 	@Test
 	public void testGenericListOfArraysProperty() {
-		ClassPathResource classPathResource = new ClassPathResource("genericBeanTests.xml", getClass())
+		ClassPathResource classPathResource = new ClassPathResource("genericBeanTests.xml", getClass());
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(classPathResource);
 		GenericBean<?> gb = (GenericBean<?>) bf.getBean("listOfArrays");

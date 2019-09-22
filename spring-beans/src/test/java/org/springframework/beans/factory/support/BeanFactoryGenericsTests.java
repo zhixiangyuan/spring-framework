@@ -128,10 +128,10 @@ public class BeanFactoryGenericsTests {
 		bf.registerBeanDefinition("genericBean", rbd);
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
 				bf.getBean("genericBean"))
-			.withMessageContaining("genericBean")
-			.withMessageContaining("testBeanList[0]")
-			.withMessageContaining(TestBean.class.getName())
-			.withMessageContaining("Integer");
+				.withMessageContaining("genericBean")
+				.withMessageContaining("testBeanList[0]")
+				.withMessageContaining(TestBean.class.getName())
+				.withMessageContaining("Integer");
 	}
 
 	@Test
@@ -165,9 +165,9 @@ public class BeanFactoryGenericsTests {
 
 	@Test
 	public void testGenericListOfArraysProperty() {
+		ClassPathResource classPathResource = new ClassPathResource("genericBeanTests.xml", getClass())
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
-		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(
-				new ClassPathResource("genericBeanTests.xml", getClass()));
+		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(classPathResource);
 		GenericBean<?> gb = (GenericBean<?>) bf.getBean("listOfArrays");
 
 		assertThat(gb.getListOfArrays().size()).isEqualTo(1);
@@ -1011,7 +1011,7 @@ public class BeanFactoryGenericsTests {
 
 		@SuppressWarnings("unchecked")
 		public <T> T createMock(Class<T> toMock) {
-			return (T) Proxy.newProxyInstance(BeanFactoryGenericsTests.class.getClassLoader(), new Class<?>[] {toMock},
+			return (T) Proxy.newProxyInstance(BeanFactoryGenericsTests.class.getClassLoader(), new Class<?>[]{toMock},
 					new InvocationHandler() {
 						@Override
 						public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

@@ -68,7 +68,10 @@ dependencies {
 	cglib("cglib:cglib:${cglibVersion}@jar")
 	objenesis("org.objenesis:objenesis:${objenesisVersion}@jar")
 	jarjar("org.pantsbuild:jarjar:1.7.2")
-	coroutines(project(":spring-core-coroutines"))
+	// 原本是 coroutines(project(":spring-core-coroutines"))
+	// 改成了 compile(coroutines(project(":spring-core-coroutines")))
+	// 不然不能编译
+	compile(coroutines(project(":spring-core-coroutines")))
 
 	compile(files(cglibRepackJar))
 	compile(files(objenesisRepackJar))

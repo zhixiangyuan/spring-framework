@@ -208,6 +208,9 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	private void parseDefaultElement(Element ele, BeanDefinitionParserDelegate delegate) {
 		if (delegate.nodeNameEquals(ele, IMPORT_ELEMENT)) {
 			// import
+			// import 标签解析过程比较清晰，获取 source 属性值，得到正确的资源路径，然后调用
+			// XmlBeanDefinitionReader#loadBeanDefinitions(Resource... resources) 方法
+			// 进行递归的 BeanDefinition 加载
 			importBeanDefinitionResource(ele);
 		}
 		else if (delegate.nodeNameEquals(ele, ALIAS_ELEMENT)) {

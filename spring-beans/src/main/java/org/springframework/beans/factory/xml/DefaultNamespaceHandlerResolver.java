@@ -62,10 +62,22 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	@Nullable
 	private final ClassLoader classLoader;
 
-	/** Resource location to search for. */
+	/**
+	 * Resource location to search for.
+	 *
+	 * NamespaceHandler 映射配置文件地址
+	 */
 	private final String handlerMappingsLocation;
 
-	/** Stores the mappings from namespace URI to NamespaceHandler class name / instance. */
+	/**
+	 * Stores the mappings from namespace URI to NamespaceHandler class name / instance.
+	 *
+	 * NamespaceHandler 映射
+	 *
+	 * key: 命名空间
+	 * value: 分成两种情况: 1) 未初始化时，对应的 NamespaceHandler 的类路径；
+	 * 	2) 已初始化，对应的 NamespaceHandler 对象
+	 */
 	@Nullable
 	private volatile Map<String, Object> handlerMappings;
 
@@ -160,6 +172,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	 * Load the specified NamespaceHandler mappings lazily.
 	 */
 	private Map<String, Object> getHandlerMappings() {
+		// 双重检查锁，延迟加载
 		Map<String, Object> handlerMappings = this.handlerMappings;
 		if (handlerMappings == null) {
 			synchronized (this) {
@@ -169,11 +182,13 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 						logger.trace("Loading NamespaceHandler mappings from [" + this.handlerMappingsLocation + "]");
 					}
 					try {
+						// 读取 handlerMappingsLocation
 						Properties mappings =
 								PropertiesLoaderUtils.loadAllProperties(this.handlerMappingsLocation, this.classLoader);
 						if (logger.isTraceEnabled()) {
 							logger.trace("Loaded NamespaceHandler mappings: " + mappings);
 						}
+						// 初始化到 handlerMappings 中
 						handlerMappings = new ConcurrentHashMap<>(mappings.size());
 						CollectionUtils.mergePropertiesIntoMap(mappings, handlerMappings);
 						this.handlerMappings = handlerMappings;

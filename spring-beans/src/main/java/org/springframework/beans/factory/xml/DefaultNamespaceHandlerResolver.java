@@ -115,34 +115,43 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	@Override
 	@Nullable
 	public NamespaceHandler resolve(String namespaceUri) {
+		// 获取所有已经配置的 Handler 映射
 		Map<String, Object> handlerMappings = getHandlerMappings();
+		// 根据 namespaceUri 获取 handler 的信息
 		Object handlerOrClassName = handlerMappings.get(namespaceUri);
+		// 不存在
 		if (handlerOrClassName == null) {
 			return null;
 		}
+		// 已经初始化
 		else if (handlerOrClassName instanceof NamespaceHandler) {
 			return (NamespaceHandler) handlerOrClassName;
 		}
+		// 需要进行初始化
 		else {
 			String className = (String) handlerOrClassName;
 			try {
+				// 获得类，并创建 NamespaceHandler 对象
 				Class<?> handlerClass = ClassUtils.forName(className, this.classLoader);
 				if (!NamespaceHandler.class.isAssignableFrom(handlerClass)) {
-					throw new FatalBeanException("Class [" + className + "] for namespace [" + namespaceUri +
-							"] does not implement the [" + NamespaceHandler.class.getName() + "] interface");
+					throw new FatalBeanException(String.format("Class [%s] for namespace [%s] does" +
+							" not implement the [%s] interface", className, namespaceUri,
+							NamespaceHandler.class.getName()));
 				}
 				NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);
+				// 初始化 NamespaceHandler 对象
 				namespaceHandler.init();
+				// 添加到缓存
 				handlerMappings.put(namespaceUri, namespaceHandler);
 				return namespaceHandler;
 			}
 			catch (ClassNotFoundException ex) {
-				throw new FatalBeanException("Could not find NamespaceHandler class [" + className +
-						"] for namespace [" + namespaceUri + "]", ex);
+				throw new FatalBeanException(String.format("Could not find NamespaceHandler " +
+						"class [%s] for namespace [%s]", className, namespaceUri), ex);
 			}
 			catch (LinkageError err) {
-				throw new FatalBeanException("Unresolvable class definition for NamespaceHandler class [" +
-						className + "] for namespace [" + namespaceUri + "]", err);
+				throw new FatalBeanException(String.format("Unresolvable class definition for " +
+						"NamespaceHandler class [%s] for namespace [%s]", className, namespaceUri), err);
 			}
 		}
 	}

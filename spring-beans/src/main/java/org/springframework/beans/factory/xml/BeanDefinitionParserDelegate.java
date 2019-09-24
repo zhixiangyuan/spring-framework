@@ -543,8 +543,12 @@ public class BeanDefinitionParserDelegate {
 			// 解析出来以后的信息都放到 bd 的属性中
 
 			// 解析元数据 <meta />
+			// meta: 元数据。当需要使用里面的信息时可以通过 key 获取。
 			parseMetaElements(ele, bd);
 			// 解析 lookup-method 属性 <lookup-method />
+			// lookup-method: 获取器注入，是把一个方法声明为返回某种类型
+			// 的 bean 但实际要返回的 bean 是在配置文件里面配置的。该方法
+			// 可以用于设计一些可插拔的功能上，解除程序依赖。
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
 			// 解析 replaced-method 属性 <replaced-method />
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
@@ -683,14 +687,19 @@ public class BeanDefinitionParserDelegate {
 
 	public void parseMetaElements(Element ele, BeanMetadataAttributeAccessor attributeAccessor) {
 		NodeList nl = ele.getChildNodes();
+		// 遍历子节点
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
+			// <meta key="special-data" value="special strategy" />
+			// 标签名为 meta
 			if (isCandidateElement(node) && nodeNameEquals(node, META_ELEMENT)) {
 				Element metaElement = (Element) node;
 				String key = metaElement.getAttribute(KEY_ATTRIBUTE);
 				String value = metaElement.getAttribute(VALUE_ATTRIBUTE);
+				// 创建 BeanMetadataAttribute 对象
 				BeanMetadataAttribute attribute = new BeanMetadataAttribute(key, value);
 				attribute.setSource(extractSource(metaElement));
+				// 添加到 BeanMetadataAttributeAccessor 中
 				attributeAccessor.addMetadataAttribute(attribute);
 			}
 		}

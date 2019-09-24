@@ -326,7 +326,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	public int loadBeanDefinitions(EncodedResource encodedResource) throws BeanDefinitionStoreException {
 		Assert.notNull(encodedResource, "EncodedResource must not be null");
 		if (logger.isTraceEnabled()) {
-			logger.trace("Loading XML bean definitions from " + encodedResource);
+			logger.trace(String.format("Loading XML bean definitions from %s", encodedResource));
 		}
 
 		// 获取已经加载过的资源
@@ -339,7 +339,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		if (!currentResources.add(encodedResource)) {
 			// 避免一个 EncodedResource 在加载时，还没加载完成，又加载自身，从而导致死循环
 			throw new BeanDefinitionStoreException(
-					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
+					String.format(
+							"Detected cyclic loading of %s - check your import definitions!", encodedResource));
 		}
 		try {
 			// 从 EncodedResource 获取封装的 Resource，并从 Resource 中获取其中的 InputStream

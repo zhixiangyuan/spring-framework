@@ -734,6 +734,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @see #setPropertyValues(MutablePropertyValues)
 	 */
 	public void setInstanceSupplier(@Nullable Supplier<?> instanceSupplier) {
+		// 设置 instanceSupplier 属性
 		this.instanceSupplier = instanceSupplier;
 	}
 
@@ -1106,6 +1107,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		if (hasMethodOverrides()) {
 			Set<MethodOverride> overrides = getMethodOverrides().getOverrides();
 			synchronized (overrides) {
+				// 循环执行 prepareMethodOverride
 				for (MethodOverride mo : overrides) {
 					prepareMethodOverride(mo);
 				}

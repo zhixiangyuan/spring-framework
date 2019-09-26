@@ -152,6 +152,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Map between depending bean names: bean name to Set of bean names for the bean's dependencies.
+	 *
+	 * 保存的是依赖 beanName 之间的映射关系：依赖 beanName - > beanName 的集合
 	 */
 	private final Map<String, Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<>(64);
 
@@ -227,9 +229,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
-		// 从单例缓冲中加载 bean
+		// 从单例缓存中加载 bean
 		Object singletonObject = this.singletonObjects.get(beanName);
-		// 缓冲中的 bean 为空，且当前 bean 正在创建
+		// 缓存中的 bean 为空，且当前 bean 正在创建
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			// 加锁
 			synchronized (this.singletonObjects) {

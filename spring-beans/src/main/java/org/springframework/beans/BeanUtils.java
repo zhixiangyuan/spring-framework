@@ -202,6 +202,7 @@ public abstract class BeanUtils {
 				return ctor.newInstance(argsWithDefaultValues);
 			}
 		}
+		// 各种异常的翻译，最终同意抛出 BeanInstantiationException 异常
 		catch (InstantiationException ex) {
 			throw new BeanInstantiationException(ctor, "Is it an abstract class?", ex);
 		}

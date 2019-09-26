@@ -168,8 +168,7 @@ public class BeanFactoryGenericsTests {
 		ClassPathResource classPathResource = new ClassPathResource("genericBeanTests.xml", getClass());
 //		ClassPathResource classPathResource = new ClassPathResource("applicationContext-tx.xml", getClass());
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
-		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(classPathResource);
-		GenericBean<?> gb = (GenericBean<?>) bf.getBean("listOfArrays");
+		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(classPathResource);GenericBean<?> gb = (GenericBean<?>) bf.getBean("listOfArrays");
 
 		assertThat(gb.getListOfArrays().size()).isEqualTo(1);
 		String[] array = gb.getListOfArrays().get(0);

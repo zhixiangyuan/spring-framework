@@ -172,6 +172,7 @@ public class BeanFactoryGenericsTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(classPathResource);
 		GenericBean<?> gb = (GenericBean<?>) bf.getBean("listOfArrays");
 		bf.getBean("setFactoryBean");
+
 		assertThat(gb.getListOfArrays().size()).isEqualTo(1);
 		String[] array = gb.getListOfArrays().get(0);
 		assertThat(array.length).isEqualTo(2);

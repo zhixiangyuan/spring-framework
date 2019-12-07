@@ -507,8 +507,10 @@ public class UrlPathHelper {
 	 * @see #setDefaultEncoding
 	 */
 	protected String determineEncoding(HttpServletRequest request) {
+		// 拿出请求中的编码格式
 		String enc = request.getCharacterEncoding();
 		if (enc == null) {
+			// 获取默认编码
 			enc = getDefaultEncoding();
 		}
 		return enc;

@@ -481,11 +481,13 @@ public class ComplexWebApplicationContext extends StaticWebApplicationContext {
 
 		@Override
 		public boolean isMultipart(HttpServletRequest request) {
+			// 这里是 mock 的直接就返回 true 了
 			return true;
 		}
 
 		@Override
 		public MultipartHttpServletRequest resolveMultipart(HttpServletRequest request) throws MultipartException {
+			// 进行一些简单的校验
 			if (request.getAttribute("fail") != null) {
 				throw new MaxUploadSizeExceededException(1000);
 			}
@@ -495,6 +497,7 @@ public class ComplexWebApplicationContext extends StaticWebApplicationContext {
 			if (request.getAttribute("resolved") != null) {
 				throw new IllegalStateException("Already resolved");
 			}
+			// 然后将 resolved 赋值为 Boolean.TRUE 表示已经解析过这个请求了，然后返回
 			request.setAttribute("resolved", Boolean.TRUE);
 			return new AbstractMultipartHttpServletRequest(request) {
 				@Override

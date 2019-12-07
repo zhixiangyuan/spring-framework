@@ -34,6 +34,9 @@ public interface MatchableHandlerMapping extends HandlerMapping {
 
 	/**
 	 * Determine whether the given request matches the request criteria.
+	 *
+	 * 判断请求和指定 `pattern` 路径是否匹配的接口方法
+	 *
 	 * @param request the current request
 	 * @param pattern the pattern to match
 	 * @return the result from request matching, or {@code null} if none

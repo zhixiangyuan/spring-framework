@@ -902,12 +902,15 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		// 将请求类型封装成 HttpMethod 对象
 		HttpMethod httpMethod = HttpMethod.resolve(request.getMethod());
 		if (httpMethod == HttpMethod.PATCH || httpMethod == null) {
+			// 如果是 PATCH 请求或者请求方法为 null 则走这边
+			// 这里之所以这样是由于 HttpServlet 没有提供 PATCH 的处理流程
 			processRequest(request, response);
 		}
 		else {
+			// 调用父类来处理
 			super.service(request, response);
 		}
 	}
@@ -1016,7 +1019,9 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	protected final void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		// 记录当前时间，用于计算 web 请求的处理时间
 		long startTime = System.currentTimeMillis();
+		// 记录异常
 		Throwable failureCause = null;
 
 		LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
@@ -1031,6 +1036,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		initContextHolders(request, localeContext, requestAttributes);
 
 		try {
+			// 执行真正的逻辑
 			doService(request, response);
 		}
 		catch (ServletException | IOException ex) {
@@ -1047,7 +1053,9 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			if (requestAttributes != null) {
 				requestAttributes.requestCompleted();
 			}
+			// 打印请求日志，并且日志级别为 DEBUG
 			logResult(request, response, failureCause, asyncManager);
+			// 发布 ServletRequestHandledEvent 事件
 			publishRequestHandledEvent(request, response, startTime, failureCause);
 		}
 	}
@@ -1162,10 +1170,11 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	private void publishRequestHandledEvent(HttpServletRequest request, HttpServletResponse response,
 			long startTime, @Nullable Throwable failureCause) {
-
+        // 如果开启发布事件
 		if (this.publishEvents && this.webApplicationContext != null) {
 			// Whether or not we succeeded, publish an event.
 			long processingTime = System.currentTimeMillis() - startTime;
+			// 创建 ServletRequestHandledEvent 事件，并进行发布
 			this.webApplicationContext.publishEvent(
 					new ServletRequestHandledEvent(this,
 							request.getRequestURI(), request.getRemoteAddr(),

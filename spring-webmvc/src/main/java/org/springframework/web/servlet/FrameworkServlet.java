@@ -863,7 +863,9 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * @param event the incoming ApplicationContext event
 	 */
 	public void onApplicationEvent(ContextRefreshedEvent event) {
+		// 标记 refreshEventReceived 为 true
 		this.refreshEventReceived = true;
+		// 处理事件中的 ApplicationContext 对象。这个方法，目前是空实现，由子类 DispatcherServlet 来实现
 		synchronized (this.onRefreshMonitor) {
 			onRefresh(event.getApplicationContext());
 		}

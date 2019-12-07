@@ -88,6 +88,9 @@ public interface MultipartResolver {
 	 * Determine if the given request contains multipart content.
 	 * <p>Will typically check for content type "multipart/form-data", but the actually
 	 * accepted requests might depend on the capabilities of the resolver implementation.
+	 *
+	 * 是否为 multipart 请求，contentType 为 multipart/form-data 的请求就是 multipart 请求
+	 *
 	 * @param request the servlet request to be evaluated
 	 * @return whether the request contains multipart content
 	 */
@@ -103,6 +106,9 @@ public interface MultipartResolver {
 	 * @return the wrapped servlet request
 	 * @throws MultipartException if the servlet request is not multipart, or if
 	 * implementation-specific problems are encountered (such as exceeding file size limits)
+	 *
+	 * 将 HttpServletRequest 请求封装成 MultipartHttpServletRequest 对象
+	 *
 	 * @see MultipartHttpServletRequest#getFile
 	 * @see MultipartHttpServletRequest#getFileNames
 	 * @see MultipartHttpServletRequest#getFileMap
@@ -115,6 +121,9 @@ public interface MultipartResolver {
 	/**
 	 * Cleanup any resources used for the multipart handling,
 	 * like a storage for the uploaded files.
+	 *
+	 * 清理处理 multipart 产生的资源，例如临时文件
+	 *
 	 * @param request the request to cleanup resources for
 	 */
 	void cleanupMultipart(MultipartHttpServletRequest request);

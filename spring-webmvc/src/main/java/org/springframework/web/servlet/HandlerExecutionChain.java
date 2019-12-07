@@ -40,8 +40,12 @@ public class HandlerExecutionChain {
 
 	private static final Log logger = LogFactory.getLog(HandlerExecutionChain.class);
 
+	/**
+	 * 这是处理器，处理器的类型可能和我们想的不太一样，是个 Object 类型
+	 */
 	private final Object handler;
 
+	/** 拦截器数组 */
 	@Nullable
 	private HandlerInterceptor[] interceptors;
 

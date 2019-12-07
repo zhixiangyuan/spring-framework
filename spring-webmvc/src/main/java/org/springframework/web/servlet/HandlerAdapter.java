@@ -57,6 +57,9 @@ public interface HandlerAdapter {
 	 * <p>{@code
 	 * return (handler instanceof MyHandler);
 	 * }
+	 *
+	 * 是否支持该处理器
+	 *
 	 * @param handler handler object to check
 	 * @return whether or not this object can use the given handler
 	 */
@@ -65,6 +68,12 @@ public interface HandlerAdapter {
 	/**
 	 * Use the given handler to handle this request.
 	 * The workflow that is required may vary widely.
+	 *
+	 * 执行处理器，返回 ModelAndView 结果
+	 *
+	 * 因为，处理器 handler 的类型是 Object 类型，需要有一个调用者来实现 handler 是怎么被使用，怎么被执行。
+	 * 而 HandlerAdapter 的用途就在于此。可能如果接口名改成 HandlerInvoker ，笔者觉得会更好理解。
+	 *
 	 * @param request current HTTP request
 	 * @param response current HTTP response
 	 * @param handler handler to use. This object must have previously been passed
@@ -80,6 +89,11 @@ public interface HandlerAdapter {
 	/**
 	 * Same contract as for HttpServlet's {@code getLastModified} method.
 	 * Can simply return -1 if there's no support in the handler class.
+	 *
+	 * 返回请求的最新更新时间。
+	 *
+	 * 如果不支持该操作，则返回 -1 即可
+	 *
 	 * @param request current HTTP request
 	 * @param handler handler to use
 	 * @return the lastModified value for the given handler

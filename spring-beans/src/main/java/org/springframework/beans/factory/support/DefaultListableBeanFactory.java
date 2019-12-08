@@ -951,7 +951,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			// 允许覆盖，直接覆盖原有的 BeanDefinition 到 beanDefinitionMap 中
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
-		// 如果未存在
+		// 如果 bean 不存在
 		else {
 			// 检测创建 Bean 阶段是否已经开启，如果开启了则需要对 beanDefinitionMap 进行并发控制
 			if (hasBeanCreationStarted()) {
@@ -973,7 +973,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				this.beanDefinitionMap.put(beanName, beanDefinition);
 				// 添加 beanName 到 beanDefinitionNames 中
 				this.beanDefinitionNames.add(beanName);
-				// 从manualSingletonNames 移除 beanName
+				// 从 manualSingletonNames 移除 beanName
 				removeManualSingletonName(beanName);
 			}
 			this.frozenBeanDefinitionNames = null;

@@ -173,6 +173,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 			PropertyValue currentPv = this.propertyValueList.get(i);
 			if (currentPv.getName().equals(pv.getName())) {
 				pv = mergeIfRequired(pv, currentPv);
+				// 用新值覆盖原来的值
 				setPropertyValueAt(pv, i);
 				return this;
 			}
@@ -221,6 +222,8 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	 */
 	private PropertyValue mergeIfRequired(PropertyValue newPv, PropertyValue currentPv) {
 		Object value = newPv.getValue();
+		// 如果新的 value 是一个 Mergeable 的值，并且开启了合并，那么久执行 merge
+		// 否则直接返回新值
 		if (value instanceof Mergeable) {
 			Mergeable mergeable = (Mergeable) value;
 			if (mergeable.isMergeEnabled()) {

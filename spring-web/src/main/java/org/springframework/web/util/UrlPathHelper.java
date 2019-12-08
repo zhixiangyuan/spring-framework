@@ -341,8 +341,10 @@ public class UrlPathHelper {
 	 * @return the request URI
 	 */
 	public String getRequestUri(HttpServletRequest request) {
+		// 先从 attribute 中拿出 WebUtils.INCLUDE_REQUEST_URI_ATTRIBUTE 属性
 		String uri = (String) request.getAttribute(WebUtils.INCLUDE_REQUEST_URI_ATTRIBUTE);
 		if (uri == null) {
+			// 如果为 null 则直接从 request 中拿出属性
 			uri = request.getRequestURI();
 		}
 		return decodeAndCleanUriString(request, uri);
@@ -357,11 +359,14 @@ public class UrlPathHelper {
 	 * @return the context path
 	 */
 	public String getContextPath(HttpServletRequest request) {
+		// 先从 attribute 中找出 WebUtils.INCLUDE_CONTEXT_PATH_ATTRIBUTE 的属性
 		String contextPath = (String) request.getAttribute(WebUtils.INCLUDE_CONTEXT_PATH_ATTRIBUTE);
 		if (contextPath == null) {
+			// 没找到就直接拿出 request 中的 context path
 			contextPath = request.getContextPath();
 		}
 		if ("/".equals(contextPath)) {
+			// 这种路径是无效的，但是为了配合 Jetty 所以沉默它
 			// Invalid case, but happens for includes on Jetty: silently adapt it.
 			contextPath = "";
 		}
@@ -527,7 +532,7 @@ public class UrlPathHelper {
 		return (this.removeSemicolonContent ?
 				removeSemicolonContentInternal(requestUri) : removeJsessionid(requestUri));
 	}
-
+	/** 这个方法的作用就是去掉 String 中的 ; 号，比如 "/user;/user" 进去，出来的是 "/user/user" */
 	private String removeSemicolonContentInternal(String requestUri) {
 		int semicolonIndex = requestUri.indexOf(';');
 		while (semicolonIndex != -1) {
@@ -538,7 +543,11 @@ public class UrlPathHelper {
 		}
 		return requestUri;
 	}
-
+	/**
+	 * 这个方法的作用是
+	 * 		"/user/;jsessionid=id;/id" 截取成 "/user/;/id"
+	 * 		"/user/;jsessionid=id" 截取成 "/user/"
+	 */
 	private String removeJsessionid(String requestUri) {
 		int startIndex = requestUri.toLowerCase().indexOf(";jsessionid=");
 		if (startIndex != -1) {

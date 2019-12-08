@@ -331,6 +331,9 @@ public abstract class UriUtils {
 	/**
 	 * Decode the given encoded URI component.
 	 * <p>See {@link StringUtils#uriDecode(String, Charset)} for the decoding rules.
+	 *
+	 * 使用指定的编码格式解压 uri
+	 *
 	 * @param source the encoded String
 	 * @param encoding the character encoding to use
 	 * @return the decoded value

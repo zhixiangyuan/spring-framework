@@ -43,6 +43,9 @@ public interface HandlerMethodMappingNamingStrategy<T> {
 
 	/**
 	 * Determine the name for the given HandlerMethod and mapping.
+	 *
+	 * 获得名字
+	 *
 	 * @param handlerMethod the handler method
 	 * @param mapping the mapping
 	 * @return the name

@@ -53,22 +53,22 @@ import org.springframework.web.util.UrlPathHelper;
  * @since 3.1
  */
 public final class RequestMappingInfo implements RequestCondition<RequestMappingInfo> {
-
+	/** 名字 */
 	@Nullable
 	private final String name;
-
+	/** 请求路径的条件 */
 	private final PatternsRequestCondition patternsCondition;
-
+	/** 请求方法的条件 */
 	private final RequestMethodsRequestCondition methodsCondition;
-
+	/** 参数的条件 */
 	private final ParamsRequestCondition paramsCondition;
-
+	/** 请求头的条件 */
 	private final HeadersRequestCondition headersCondition;
-
+	/** 可消费的 Content-Type 的条件 */
 	private final ConsumesRequestCondition consumesCondition;
-
+	/** 可生产的 Content-Type 的条件 */
 	private final ProducesRequestCondition producesCondition;
-
+	/** 自定义的条件 */
 	private final RequestConditionHolder customConditionHolder;
 
 
@@ -216,7 +216,9 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	@Override
 	@Nullable
 	public RequestMappingInfo getMatchingCondition(HttpServletRequest request) {
+		// 匹配 methodsCondition、paramsCondition、headersCondition、consumesCondition、producesCondition
 		RequestMethodsRequestCondition methods = this.methodsCondition.getMatchingCondition(request);
+		// // 如果任一为空，则返回 null ，表示匹配失败
 		if (methods == null) {
 			return null;
 		}

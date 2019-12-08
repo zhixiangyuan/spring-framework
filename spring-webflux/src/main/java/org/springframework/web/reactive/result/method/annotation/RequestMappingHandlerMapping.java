@@ -123,10 +123,12 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	@Override
 	public void afterPropertiesSet() {
+		// 构建 RequestMappingInfo.BuilderConfiguration 对象
 		this.config = new RequestMappingInfo.BuilderConfiguration();
 		this.config.setPatternParser(getPathPatternParser());
 		this.config.setContentTypeResolver(getContentTypeResolver());
 
+		// 调用父类，初始化
 		super.afterPropertiesSet();
 	}
 
@@ -151,12 +153,15 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 */
 	@Override
 	protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
+		// 基于方法上的 @RequestMapping 注解，创建 RequestMappingInfo 对象
 		RequestMappingInfo info = createRequestMappingInfo(method);
 		if (info != null) {
+			// 基于类上的 @RequestMapping 注解，合并进去
 			RequestMappingInfo typeInfo = createRequestMappingInfo(handlerType);
 			if (typeInfo != null) {
 				info = typeInfo.combine(info);
 			}
+			// 如果有前缀，则设置到 info 中
 			for (Map.Entry<String, Predicate<Class<?>>> entry : this.pathPrefixes.entrySet()) {
 				if (entry.getValue().test(handlerType)) {
 					String prefix = entry.getKey();
@@ -180,9 +185,12 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 */
 	@Nullable
 	private RequestMappingInfo createRequestMappingInfo(AnnotatedElement element) {
+		// 获得 @RequestMapping 注解
 		RequestMapping requestMapping = AnnotatedElementUtils.findMergedAnnotation(element, RequestMapping.class);
+		// 获得自定义的条件。目前都是空方法，可以无视
 		RequestCondition<?> condition = (element instanceof Class ?
 				getCustomTypeCondition((Class<?>) element) : getCustomMethodCondition((Method) element));
+		// 基于 @RequestMapping 注解，创建 RequestMappingInfo 对象
 		return (requestMapping != null ? createRequestMappingInfo(requestMapping, condition) : null);
 	}
 
@@ -233,6 +241,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	protected RequestMappingInfo createRequestMappingInfo(
 			RequestMapping requestMapping, @Nullable RequestCondition<?> customCondition) {
 
+		// 创建 RequestMappingInfo.Builder 对象，设置对应属性
 		RequestMappingInfo.Builder builder = RequestMappingInfo
 				.paths(resolveEmbeddedValuesInPatterns(requestMapping.path()))
 				.methods(requestMapping.method())
@@ -244,6 +253,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 		if (customCondition != null) {
 			builder.customCondition(customCondition);
 		}
+		// 创建 RequestMappingInfo 对象
 		return builder.options(this.config).build();
 	}
 

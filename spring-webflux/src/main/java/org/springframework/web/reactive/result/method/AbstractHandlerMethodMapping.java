@@ -250,10 +250,13 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @return the created HandlerMethod
 	 */
 	protected HandlerMethod createHandlerMethod(Object handler, Method method) {
+		// 如果 handler 类型为 String， 说明对应一个 Bean 对象，例如 UserController 使
+		// 用 @Controller 注解后，默认 handler 为它的 beanName ，即 `userController`
 		if (handler instanceof String) {
 			return new HandlerMethod((String) handler,
 					obtainApplicationContext().getAutowireCapableBeanFactory(), method);
 		}
+		// 如果 handler 类型非 String ，说明是一个已经是一个 handler 对象，就无需处理，直接创建 HandlerMethod 对象
 		return new HandlerMethod(handler, method);
 	}
 
@@ -510,17 +513,22 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		}
 
 		public void unregister(T mapping) {
+			// 获得写锁
 			this.readWriteLock.writeLock().lock();
 			try {
+				// 从 registry 中移除
 				MappingRegistration<T> definition = this.registry.remove(mapping);
 				if (definition == null) {
 					return;
 				}
 
+				// 从 mappingLookup 中移除
 				this.mappingLookup.remove(definition.getMapping());
+				// 从 corsLookup 中移除
 				this.corsLookup.remove(definition.getHandlerMethod());
 			}
 			finally {
+				// 释放写锁
 				this.readWriteLock.writeLock().unlock();
 			}
 		}

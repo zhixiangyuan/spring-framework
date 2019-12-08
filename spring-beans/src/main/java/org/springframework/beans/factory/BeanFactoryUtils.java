@@ -330,6 +330,9 @@ public abstract class BeanFactoryUtils {
 	 * hiding corresponding beans in ancestor factories.</b> This feature allows for
 	 * 'replacing' beans by explicitly choosing the same bean name in a child factory;
 	 * the bean in the ancestor factory won't be visible then, not even for by-type lookups.
+	 *
+	 * 这个方法简单来讲就是从 lbf 工厂中找到所有满足条件的 bean，满足的条件即 type
+	 *
 	 * @param lbf the bean factory
 	 * @param type type of bean to match
 	 * @param includeNonSingletons whether to include prototype or scoped beans too

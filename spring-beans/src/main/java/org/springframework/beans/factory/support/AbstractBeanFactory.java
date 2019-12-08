@@ -1368,6 +1368,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 				// Set default singleton scope, if not configured before.
 				if (!StringUtils.hasLength(mbd.getScope())) {
+					// 到这里时如果 bean 的 scope 没有设置，那么默认为单例
 					mbd.setScope(RootBeanDefinition.SCOPE_SINGLETON);
 				}
 

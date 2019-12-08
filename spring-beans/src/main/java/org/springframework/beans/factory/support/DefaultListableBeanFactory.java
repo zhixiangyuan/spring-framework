@@ -506,9 +506,19 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				try {
 					RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 					// Only check bean definition if it is complete.
-					if (!mbd.isAbstract() && (allowEagerInit ||
-							(mbd.hasBeanClass() || !mbd.isLazyInit() || isAllowEagerClassLoading()) &&
-									!requiresEagerInitForType(mbd.getFactoryBeanName()))) {
+					// spring 啊 spring，你把条件写这么复杂是想累死我然后继承我的蚂蚁花呗么
+					if (
+							// 不是抽象 bean &&
+							!mbd.isAbstract() &&
+									(
+											// 允许立刻初始化 ||
+											allowEagerInit ||
+													// 有 beanClass || 不是懒加载 || 允许立刻加载 &&
+													(mbd.hasBeanClass() || !mbd.isLazyInit() || isAllowEagerClassLoading()) &&
+															// 是否需要立刻初始化 bean
+															!requiresEagerInitForType(mbd.getFactoryBeanName())
+									)
+					) {
 						// In case of FactoryBean, match object created by FactoryBean.
 						boolean isFactoryBean = isFactoryBean(beanName, mbd);
 						BeanDefinitionHolder dbd = mbd.getDecoratedDefinition();

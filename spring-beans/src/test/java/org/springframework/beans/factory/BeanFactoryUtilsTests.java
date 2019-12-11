@@ -76,6 +76,12 @@ public class BeanFactoryUtilsTests {
 		this.listableBeanFactory = child;
 	}
 
+	@Test
+	public void testIsFactoryDereference() {
+		assertThat(BeanFactoryUtils.isFactoryDereference(null)).isFalse();
+		assertThat(BeanFactoryUtils.isFactoryDereference("test")).isFalse();
+		assertThat(BeanFactoryUtils.isFactoryDereference(BeanFactory.FACTORY_BEAN_PREFIX + "test")).isTrue();
+	}
 
 	@Test
 	public void testHierarchicalCountBeansWithNonHierarchicalFactory() {

@@ -1979,13 +1979,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected void invokeInitMethods(String beanName, final Object bean, @Nullable RootBeanDefinition mbd)
 			throws Throwable {
 
-		// 首先会检查是否是 InitializingBean ，如果是的话需要调用 afterPropertiesSet()
+		// 检查 Bean 是否实现了 InitializingBean，如果是的话则调用 afterPropertiesSet();
 		boolean isInitializingBean = (bean instanceof InitializingBean);
 		if (isInitializingBean && (mbd == null || !mbd.isExternallyManagedInitMethod("afterPropertiesSet"))) {
 			if (logger.isTraceEnabled()) {
 				logger.trace("Invoking afterPropertiesSet() on bean with name '" + beanName + "'");
 			}
-			// 安全模式
+			// 这里涉及到 java 中的安全管理，可以看到，无论是否设置了安全管理器，都会去调用 afterPropertiesSet
 			if (System.getSecurityManager() != null) {
 				try {
 					AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () -> {
@@ -2004,6 +2004,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 
+		// 判断是否指定了 init-method 方法，如果指定了 init-method 方法，则再调用指定的 init-method
 		if (mbd != null && bean.getClass() != NullBean.class) {
 			String initMethodName = mbd.getInitMethodName();
 			if (StringUtils.hasLength(initMethodName) &&

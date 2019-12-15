@@ -136,6 +136,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		if (this.delegate.isDefaultNamespace(root)) {
 			// 处理 profile 属性，可参见 《Spring3 自定义环境配置 <beans profile="">》
 			// 网页地址: http://nassir.iteye.com/blog/1535799
+			// todo 这里关于 profile 的解析还需要细细研究一下
 			String profileSpec = root.getAttribute(PROFILE_ATTRIBUTE);
 			if (StringUtils.hasText(profileSpec)) {
 				// 使用分隔符切分，可能有多个 profile

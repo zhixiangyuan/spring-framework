@@ -131,7 +131,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	private ErrorHandler errorHandler = new SimpleSaxErrorHandler(logger);
 	/** XML 验证模式探测器 */
 	private final XmlValidationModeDetector validationModeDetector = new XmlValidationModeDetector();
-
+	/**
+	 * 这里可以看到 Spring 的设计，每一个线程都有一个自己正在加载的 Set，每个线程都判断自己将要加载的资源是否正在
+	 * 加载，这样可以防止出现问题，nice
+	 */
 	private final ThreadLocal<Set<EncodedResource>> resourcesCurrentlyBeingLoaded =
 			new NamedThreadLocal<>("XML bean definition resources currently being loaded");
 
@@ -544,7 +547,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @see BeanDefinitionDocumentReader#registerBeanDefinitions
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
-		// 创建 BeanDefinitionDocumentReader 对象
+		// 创建 BeanDefinitionDocumentReader 对象，他自己用干嘛老是用反射去创建？？？直接 new 不好么
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
 		// 获取已注册的 BeanDefinition 数量
 		int countBefore = getRegistry().getBeanDefinitionCount();

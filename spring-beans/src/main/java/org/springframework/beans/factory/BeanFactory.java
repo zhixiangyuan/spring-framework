@@ -94,6 +94,8 @@ import org.springframework.lang.Nullable;
  * <li>a custom destroy-method definition
  * </ol>
  *
+ * BeanFactory 接口只定义如何访问容器内管理的 Bean 的方法
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Chris Beams

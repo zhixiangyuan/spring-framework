@@ -73,6 +73,8 @@ import org.springframework.util.xml.DomUtils;
  * {@link BeanDefinitionParser BeanDefinitionParsers} or
  * {@link BeanDefinitionDecorator BeanDefinitionDecorators}.
  *
+ * 这个类的作用是根据解析的文件结果来生成 bean 的实例
+ *
  * @author Rob Harrop
  * @author Juergen Hoeller
  * @author Rod Johnson
@@ -230,7 +232,9 @@ public class BeanDefinitionParserDelegate {
 	private final XmlReaderContext readerContext;
 
 	private final DocumentDefaultsDefinition defaults = new DocumentDefaultsDefinition();
-
+	/**
+	 * 这个难道是控制防止并发时出错的？，可以看到他在使用的时候是开始 push 进去，最后 finally 中 pop 出来
+	 */
 	private final ParseState parseState = new ParseState();
 
 	/**
@@ -263,6 +267,8 @@ public class BeanDefinitionParserDelegate {
 	/**
 	 * Invoke the {@link org.springframework.beans.factory.parsing.SourceExtractor}
 	 * to pull the source metadata from the supplied {@link Element}.
+	 *
+	 * 这里摘出的 source 到底是什么
 	 */
 	@Nullable
 	protected Object extractSource(Element ele) {
@@ -321,6 +327,8 @@ public class BeanDefinitionParserDelegate {
 	 * @param root the root element of the current bean definition document (or nested beans element)
 	 */
 	protected void populateDefaults(DocumentDefaultsDefinition defaults, @Nullable DocumentDefaultsDefinition parentDefaults, Element root) {
+		// 我第一次看到这里，传到这里的是 <beans> 标签
+		// 下面就是在初始化 <beans> 中设置的各种参数
 		String lazyInit = root.getAttribute(DEFAULT_LAZY_INIT_ATTRIBUTE);
 		if (isDefaultValue(lazyInit)) {
 			// Potentially inherited from outer <beans> sections, otherwise falling back to false.
@@ -418,18 +426,17 @@ public class BeanDefinitionParserDelegate {
 		String id = ele.getAttribute(ID_ATTRIBUTE);
 		String nameAttr = ele.getAttribute(NAME_ATTRIBUTE);
 
-		// 计算别名集合
+		// name 也要加入到别名中
 		List<String> aliases = new ArrayList<>();
 		if (StringUtils.hasLength(nameAttr)) {
 			String[] nameArr = StringUtils.tokenizeToStringArray(nameAttr, MULTI_VALUE_ATTRIBUTE_DELIMITERS);
 			aliases.addAll(Arrays.asList(nameArr));
 		}
 
-		// beanName 优先使用 id
+		// beanName 优先使用 id 作为 beanName
 		String beanName = id;
-		// beanName 其次 使用 aliases 的第一个
+		// 如果没有设置 beanName 同时设置了别名，那么就是用别名集合中的第一个作为 beanName
 		if (!StringUtils.hasText(beanName) && !aliases.isEmpty()) {
-			// 移除出别名集合
 			beanName = aliases.remove(0);
 			if (logger.isTraceEnabled()) {
 				logger.trace("No XML 'id' specified - using '" + beanName +
@@ -445,7 +452,7 @@ public class BeanDefinitionParserDelegate {
 		// 解析属性，构造 AbstractBeanDefinition 对象
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
-			// beanName 再次使用 beanName 生成规则
+			// 如果 beanName 为 null 则生成 beanName
 			if (!StringUtils.hasText(beanName)) {
 				try {
 					if (containingBean != null) {
@@ -489,21 +496,25 @@ public class BeanDefinitionParserDelegate {
 	 * within the current level of beans element nesting.
 	 */
 	protected void checkNameUniqueness(String beanName, List<String> aliases, Element beanElement) {
-		// 寻找是否 beanName 已经使用
-		String foundName = null;
 
+		String foundName = null;
+		// 如果 beanName 不为 null 且 usedNames 中包含 beanName，则将 beanName 赋值给 foundName
+		// 那么则说明该 beanName 已经被使用过了
 		if (StringUtils.hasText(beanName) && this.usedNames.contains(beanName)) {
 			foundName = beanName;
 		}
 		if (foundName == null) {
+			// 这里是在 aliases 集合中寻找是否有名字被使用过了
 			foundName = CollectionUtils.findFirstMatch(this.usedNames, aliases);
 		}
 		// 若已使用，使用 problemReporter 提示错误
 		if (foundName != null) {
+			// 找到了则报错
 			error("Bean name '" + foundName + "' is already used in this <beans> element", beanElement);
 		}
 
 		// 添加到 usedNames 集合
+		// 如果一切正常，就将这些名字加入到已使用的名字当中
 		this.usedNames.add(beanName);
 		this.usedNames.addAll(aliases);
 	}
@@ -515,7 +526,7 @@ public class BeanDefinitionParserDelegate {
 	@Nullable
 	public AbstractBeanDefinition parseBeanDefinitionElement(
 			Element ele, String beanName, @Nullable BeanDefinition containingBean) {
-
+		// todo 这里是在干嘛？？？
 		this.parseState.push(new BeanEntry(beanName));
 
 		// 解析 class 属性
@@ -533,7 +544,7 @@ public class BeanDefinitionParserDelegate {
 			// 创建用于承载属性的 AbstractBeanDefinition 实例
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
-			// 解析默认 bean 的各种属性
+			// 解析默认 bean 标签的各种属性
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			// 提取 description
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
@@ -997,7 +1008,7 @@ public class BeanDefinitionParserDelegate {
 		Element subElement = null;
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
-			// meta、description 不处理
+			// node 如果不是 meta 和 description 则进入 if
 			if (node instanceof Element && !nodeNameEquals(node, DESCRIPTION_ELEMENT) &&
 					!nodeNameEquals(node, META_ELEMENT)) {
 				// Child element is what we're looking for.
@@ -1595,7 +1606,9 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	public boolean isDefaultNamespace(Node node) {
-		return isDefaultNamespace(getNamespaceURI(node));
+		return isDefaultNamespace(
+				// 这里 get 出来的 namespace uri 是个啥，每个节点都有可以设置？？？
+				getNamespaceURI(node));
 	}
 
 	private boolean isDefaultValue(String value) {

@@ -114,7 +114,9 @@ public abstract class DomUtils {
 	 */
 	@Nullable
 	public static String getChildElementValueByTagName(Element ele, String childEleName) {
+		// 找到 ele 标签下面的名字为 childEleName 的标签
 		Element child = getChildElementByTagName(ele, childEleName);
+		// 从找的 child 中提取出其中的内容
 		return (child != null ? getTextValue(child) : null);
 	}
 
@@ -182,6 +184,8 @@ public abstract class DomUtils {
 	 * Matches the given node's name and local name against the given desired name.
 	 */
 	private static boolean nodeNameMatch(Node node, String desiredName) {
+		// 这里的 node.getNodeName() get 出来的值是标签名，比如说 <bean> get 出来的就是 bean
+		// todo 这里的 node.getLocalName() 我也不清楚 get 出来是个啥
 		return (desiredName.equals(node.getNodeName()) || desiredName.equals(node.getLocalName()));
 	}
 

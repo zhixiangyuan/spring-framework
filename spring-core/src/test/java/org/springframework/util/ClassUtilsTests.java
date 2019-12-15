@@ -76,6 +76,7 @@ public class ClassUtilsTests {
 		assertThat(ClassUtils.forName(TestObject[].class.getName(), classLoader)).isEqualTo(TestObject[].class);
 		assertThat(ClassUtils.forName("org.springframework.tests.sample.objects.TestObject[][]", classLoader)).isEqualTo(TestObject[][].class);
 		assertThat(ClassUtils.forName(TestObject[][].class.getName(), classLoader)).isEqualTo(TestObject[][].class);
+		// 这个写法有点牛皮
 		assertThat(ClassUtils.forName("[[[S", classLoader)).isEqualTo(short[][][].class);
 	}
 
@@ -89,6 +90,7 @@ public class ClassUtilsTests {
 		assertThat(ClassUtils.forName("long", classLoader)).isEqualTo(long.class);
 		assertThat(ClassUtils.forName("float", classLoader)).isEqualTo(float.class);
 		assertThat(ClassUtils.forName("double", classLoader)).isEqualTo(double.class);
+		// 这个也有点牛皮
 		assertThat(ClassUtils.forName("void", classLoader)).isEqualTo(void.class);
 	}
 

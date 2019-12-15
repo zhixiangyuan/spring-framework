@@ -29,6 +29,8 @@ import org.springframework.lang.Nullable;
  * position in the parse phase. This representation is intended for use in
  * error messages.
  *
+ * todo 不太懂这个类到底是干什么的
+ *
  * @author Rob Harrop
  * @since 2.0
  */

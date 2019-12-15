@@ -32,6 +32,8 @@ import org.springframework.util.ObjectUtils;
  * A {@link BeanWrapper} implementation should handle any necessary conversion,
  * as this object doesn't know anything about the objects it will be applied to.
  *
+ * 存放 bean 中的属性值
+ *
  * @author Rod Johnson
  * @author Rob Harrop
  * @author Juergen Hoeller

@@ -33,6 +33,12 @@ import org.springframework.lang.Nullable;
  * this interface. It only serves as suggestion for bean definition
  * readers that want to follow standard naming conventions.
  *
+ * 采用外部配置文件时，Spring 的 IoC 容器有一个统一的处理方式。通常情况下，需要根据不同的外部
+ * 配置文件格式，给出相应的 BeanDefinitionReader 实现类，由 BeanDefinitionReader 的相应
+ * 实现类负责将相应的配置文件内容读取并映射到 BeanDefinition，然后将映射后的 BeanDefinition
+ * 注册到 BeanDefinitionRegistry，之后，BeanDefinition 之类的哦你工作，都是由 BeanDefinitionReader
+ * 的相应实现类来做的，BeanDefinitionRegistry 只不过负责保管而已。
+ *
  * @author Juergen Hoeller
  * @since 1.1
  * @see org.springframework.core.io.Resource

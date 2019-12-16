@@ -32,6 +32,8 @@ import org.springframework.lang.Nullable;
  * being able to reload message definitions without restarting the VM
  * </ul>
  *
+ * Spring 在 Java SE 的国际化支持的基础上， 进一步抽象了国际化信息的访问接口
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see org.springframework.context.support.ResourceBundleMessageSource

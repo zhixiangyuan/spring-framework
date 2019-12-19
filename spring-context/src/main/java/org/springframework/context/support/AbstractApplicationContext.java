@@ -521,8 +521,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// 这里是 IOC 容器初始化的核心方法，告诉子类启动 refreshBeanFactory() 方法，
-			// Bean 定义资源文件的载入从子类的 refreshBeanFactory() 方法启动
-			// 创建并初始化 BeanFactory
+			// Bean 定义资源文件的载入从子类的 refreshBeanFactory() 方法启动，创建并初始化 BeanFactory
 			// Tell the subclass to refresh the internal bean factory.
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
@@ -767,6 +766,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * Instantiate and register all BeanPostProcessor beans,
 	 * respecting explicit order if given.
 	 * <p>Must be called before any instantiation of application beans.
+	 *
+	 * 实例化并调用已经注入的 BeanPostProcessor，必须在应用中 bean 实例化之前调用
 	 */
 	protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 		PostProcessorRegistrationDelegate.registerBeanPostProcessors(beanFactory, this);

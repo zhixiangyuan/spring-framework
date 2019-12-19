@@ -186,6 +186,7 @@ public class ResolvableType implements Serializable {
 	 */
 	private ResolvableType(@Nullable Class<?> clazz) {
 		this.resolved = (clazz != null ? clazz : Object.class);
+		// 这里注意，当只在构造传入 clazz 时，this.type 和 this.resolved 是相等的
 		this.type = this.resolved;
 		this.typeProvider = null;
 		this.variableResolver = null;

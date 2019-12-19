@@ -139,7 +139,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 		else if (handlerOrClassName instanceof NamespaceHandler) {
 			return (NamespaceHandler) handlerOrClassName;
 		}
-		// 需要进行初始化
+		// 需要进行初始化，未初始化的时候 handlerOrClassName 仅仅是 ClassName
 		else {
 			String className = (String) handlerOrClassName;
 			try {

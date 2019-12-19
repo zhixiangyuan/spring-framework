@@ -1606,9 +1606,7 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	public boolean isDefaultNamespace(Node node) {
-		return isDefaultNamespace(
-				// 这里 get 出来的 namespace uri 是个啥，每个节点都有可以设置？？？
-				getNamespaceURI(node));
+		return isDefaultNamespace(getNamespaceURI(node));
 	}
 
 	private boolean isDefaultValue(String value) {

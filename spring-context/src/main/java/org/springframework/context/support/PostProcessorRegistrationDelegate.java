@@ -298,13 +298,17 @@ final class PostProcessorRegistrationDelegate {
 	}
 
 	private static void sortPostProcessors(List<?> postProcessors, ConfigurableListableBeanFactory beanFactory) {
+		// 获得 Comparator 对象
 		Comparator<Object> comparatorToUse = null;
 		if (beanFactory instanceof DefaultListableBeanFactory) {
+			// 依赖的 Comparator 对象
 			comparatorToUse = ((DefaultListableBeanFactory) beanFactory).getDependencyComparator();
 		}
 		if (comparatorToUse == null) {
+			// 默认 Comparator 对象
 			comparatorToUse = OrderComparator.INSTANCE;
 		}
+		// 排序
 		postProcessors.sort(comparatorToUse);
 	}
 
@@ -335,7 +339,7 @@ final class PostProcessorRegistrationDelegate {
 	 */
 	private static void registerBeanPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, List<BeanPostProcessor> postProcessors) {
-
+		// 遍历 BeanPostProcessor 注册
 		for (BeanPostProcessor postProcessor : postProcessors) {
 			beanFactory.addBeanPostProcessor(postProcessor);
 		}

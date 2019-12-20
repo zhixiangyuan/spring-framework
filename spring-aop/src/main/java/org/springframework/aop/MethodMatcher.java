@@ -53,6 +53,9 @@ public interface MethodMatcher {
 	 * method returns {@code false}, no runtime check (i.e. no
 	 * {@link #matches(java.lang.reflect.Method, Class, Object[])} call)
 	 * will be made.
+	 *
+	 * 这个方法由于不需要传入参数，所以可以对返回结果做缓存，性能比带参数的好很多
+	 *
 	 * @param method the candidate method
 	 * @param targetClass the target class
 	 * @return whether or not this method matches statically
@@ -65,6 +68,12 @@ public interface MethodMatcher {
 	 * runtime even if the 2-arg matches method returns {@code true}?
 	 * <p>Can be invoked when an AOP proxy is created, and need not be invoked
 	 * again before each method invocation,
+	 *
+	 * 当 isRuntime 返回 false 时，不会执行 {@link #matches(java.lang.reflect.Method, Class, Object[])}
+	 * 仅执行 {@link #matches(java.lang.reflect.Method, Class)}
+	 * 当 isRuntime 返回 true 和 {@link #matches(java.lang.reflect.Method, Class)} 返回 true 时，才会执行
+	 * {@link #matches(java.lang.reflect.Method, Class, Object[])}
+	 *
 	 * @return whether or not a runtime match via the 3-arg
 	 * {@link #matches(java.lang.reflect.Method, Class, Object[])} method
 	 * is required if static matching passed

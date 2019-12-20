@@ -32,6 +32,9 @@ public interface ClassFilter {
 
 	/**
 	 * Should the pointcut apply to the given interface or target class?
+	 * 当织入的目标对象的 Class 类型与 Pointcut 所规定的类型相符时，matches 方法将会返回 true，
+	 * 否则返回 false
+	 *
 	 * @param clazz the candidate target class
 	 * @return whether the advice should apply to the given target class
 	 */
@@ -40,6 +43,8 @@ public interface ClassFilter {
 
 	/**
 	 * Canonical instance of a ClassFilter that matches all classes.
+	 * 如果类型对我们所捕捉的 JoinPoint 无所谓，那么 Pointcut 中使用的 ClassFilter 可以直接使用
+	 * ClassFilter TRUE = TrueClassFilter.INSTANCE;
 	 */
 	ClassFilter TRUE = TrueClassFilter.INSTANCE;
 

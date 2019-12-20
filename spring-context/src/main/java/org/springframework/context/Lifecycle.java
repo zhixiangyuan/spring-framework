@@ -40,6 +40,8 @@ package org.springframework.context;
  * {@link SmartLifecycle} interface provides sophisticated integration with the
  * application context's startup and shutdown phases.
  *
+ * 对 context 生命周期的管理，它提供 #start() 和 #stop() 方法启动和暂停组件
+ *
  * @author Juergen Hoeller
  * @since 2.0
  * @see SmartLifecycle

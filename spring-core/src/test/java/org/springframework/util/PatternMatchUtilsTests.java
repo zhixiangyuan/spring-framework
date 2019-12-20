@@ -30,6 +30,7 @@ public class PatternMatchUtilsTests {
 	public void testTrivial() {
 		assertThat(PatternMatchUtils.simpleMatch((String) null, "")).isEqualTo(false);
 		assertThat(PatternMatchUtils.simpleMatch("1", null)).isEqualTo(false);
+		doTest("*", "", true);
 		doTest("*", "123", true);
 		doTest("123", "123", true);
 	}
@@ -85,6 +86,7 @@ public class PatternMatchUtilsTests {
 
 	@Test
 	public void testPatternVariants() {
+		doTest("*", "*", true);
 		doTest("*a", "*", false);
 		doTest("*a", "a", true);
 		doTest("*a", "b", false);

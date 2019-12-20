@@ -36,6 +36,7 @@ public abstract class StaticMethodMatcher implements MethodMatcher {
 	@Override
 	public final boolean matches(Method method, Class<?> targetClass, Object... args) {
 		// should never be invoked because isRuntime() returns false
+		// 可以看到 StaticMethodMatcher 不支持这种方式，他直接在这个方法上面加了 final
 		throw new UnsupportedOperationException("Illegal MethodMatcher usage");
 	}
 

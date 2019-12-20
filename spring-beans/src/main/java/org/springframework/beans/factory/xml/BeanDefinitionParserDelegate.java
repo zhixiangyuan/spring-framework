@@ -1516,7 +1516,7 @@ public class BeanDefinitionParserDelegate {
 		}
 		return finalDefinition;
 	}
-
+	/** 这里的装饰就是来处理自定义的标签的 */
 	public BeanDefinitionHolder decorateIfRequired(
 			Node node, BeanDefinitionHolder originalDef, @Nullable BeanDefinition containingBd) {
 

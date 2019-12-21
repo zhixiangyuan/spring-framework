@@ -23,6 +23,9 @@ package org.springframework.aop;
  * Both these basic terms and a Pointcut itself can be combined to build up combinations
  * (e.g. through {@link org.springframework.aop.support.ComposablePointcut}).
  *
+ * 这有两个过滤器，一个控制是否满足类，另一个控制类中的哪一个方法
+ * 这样就能确定下来是哪一个类里面的哪一个方法
+ *
  * @author Rod Johnson
  * @see ClassFilter
  * @see MethodMatcher

@@ -5,4 +5,8 @@
 
 	<bean id="fooFactory" class="org.springframework.beans.factory.FooFactoryBean"/>
 
+<!--	<bean id="fooFactory1" class="org.springframework.beans.factory.FooFactoryBean" scope="singleton">-->
+<!--		<property name="fooFactoryBean" ref="fooFactory"></property>-->
+<!--	</bean>-->
+
 </beans>

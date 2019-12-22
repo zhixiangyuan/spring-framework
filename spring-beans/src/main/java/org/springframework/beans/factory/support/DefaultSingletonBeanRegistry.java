@@ -231,7 +231,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 		// 从单例缓存中加载 bean
 		Object singletonObject = this.singletonObjects.get(beanName);
-		// 缓存中的 bean 为空，且当前 bean 正在创建
+		// 缓存中的 bean 为空，且当前 bean 正在创建才进入 if
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			// 加锁
 			synchronized (this.singletonObjects) {

@@ -96,6 +96,8 @@ import org.springframework.lang.Nullable;
  *
  * BeanFactory 接口只定义如何访问容器内管理的 Bean 的方法
  *
+ * BeanFactory 是一个负责生产 bean 的工厂
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Chris Beams

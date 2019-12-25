@@ -83,7 +83,7 @@ public class AspectMetadata implements Serializable {
 
 		Class<?> currClass = aspectClass;
 		AjType<?> ajType = null;
-		while (currClass != Object.class) {
+		while (currClass != Object.class) { // 这里面的逻辑就是检查子类和父类，是否某一个类含有 Aspect.class 注解
 			AjType<?> ajTypeToCheck = AjTypeSystem.getAjType(currClass);
 			if (ajTypeToCheck.isAspect()) {
 				ajType = ajTypeToCheck;
@@ -97,7 +97,7 @@ public class AspectMetadata implements Serializable {
 		if (ajType.getDeclarePrecedence().length > 0) {
 			throw new IllegalArgumentException("DeclarePrecendence not presently supported in Spring AOP");
 		}
-		this.aspectClass = ajType.getJavaClass();
+		this.aspectClass = ajType.getJavaClass(); // 等同于 this.aspectClass = aspectClass
 		this.ajType = ajType;
 
 		switch (this.ajType.getPerClause().getKind()) {

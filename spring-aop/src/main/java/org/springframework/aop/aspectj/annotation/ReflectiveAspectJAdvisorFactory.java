@@ -150,6 +150,7 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 		final List<Method> methods = new ArrayList<>();
 		ReflectionUtils.doWithMethods(aspectClass, method -> {
 			// Exclude pointcuts
+			// 如果方法上面有 Pointcut 注解，则将其加入 methods
 			if (AnnotationUtils.getAnnotation(method, Pointcut.class) == null) {
 				methods.add(method);
 			}
@@ -182,6 +183,14 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 	}
 
 
+	/**
+	 *
+	 * @param candidateAdviceMethod the candidate advice method 这个方法中含有 Pointcut() 注解
+	 * @param aspectInstanceFactory the aspect instance factory
+	 * @param declarationOrderInAspect
+	 * @param aspectName the name of the aspect
+	 * @return
+	 */
 	@Override
 	@Nullable
 	public Advisor getAdvisor(Method candidateAdviceMethod, MetadataAwareAspectInstanceFactory aspectInstanceFactory,

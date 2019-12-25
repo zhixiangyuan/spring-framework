@@ -347,6 +347,7 @@ public abstract class ReflectionUtils {
 	 * class and superclasses (or given interface and super-interfaces).
 	 * <p>The same named method occurring on subclass and superclass will appear
 	 * twice, unless excluded by the specified {@link MethodFilter}.
+	 * 遍历 clazz 指向的类的所有方法，如果该方法满足 mf 的 matches 则使用 mc 的 doWith 进行处理
 	 * @param clazz the class to introspect
 	 * @param mc the callback to invoke for each method
 	 * @param mf the filter that determines the methods to apply the callback to

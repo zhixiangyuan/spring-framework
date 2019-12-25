@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
  */
 @SuppressWarnings("serial")
 public class LazySingletonAspectInstanceFactoryDecorator implements MetadataAwareAspectInstanceFactory, Serializable {
-
+	/** 这个工厂里面放了创建好的切面对象和该对象的名字以及 class 类型 */
 	private final MetadataAwareAspectInstanceFactory maaif;
 
 	@Nullable

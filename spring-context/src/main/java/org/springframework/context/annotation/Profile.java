@@ -102,7 +102,7 @@ import org.springframework.core.env.Profiles;
 @Conditional(ProfileCondition.class)
 public @interface Profile {
 
-	/**
+	/** 当 value 满足 profile 时满足条件
 	 * The set of profiles for which the annotated component should be registered.
 	 */
 	String[] value();

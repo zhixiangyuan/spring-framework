@@ -153,6 +153,9 @@ public abstract class BeanUtils {
 	 * available, but the type desired (assignableTo) is known.
 	 * <p>Note that this method tries to set the constructor accessible if given a
 	 * non-accessible (that is, non-public) constructor.
+	 *
+	 * 其实就是 new，只不过 Spring 中很多时候传入的是 Class，没法直接 new，所以就通过这个方法间接 new 出来
+	 *
 	 * @param clazz class to instantiate
 	 * @param assignableTo type that clazz must be assignableTo
 	 * @return the new instance

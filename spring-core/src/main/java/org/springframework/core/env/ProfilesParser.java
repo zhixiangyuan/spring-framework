@@ -37,7 +37,7 @@ final class ProfilesParser {
 	private ProfilesParser() {
 	}
 
-
+	/** 内部处理还挺复杂的，直接理解为 dev, prod 便会创建两个 parsed 即可，然后将其放入 ParsedProfiles */
 	static Profiles parse(String... expressions) {
 		Assert.notEmpty(expressions, "Must specify at least one profile");
 		Profiles[] parsed = new Profiles[expressions.length];

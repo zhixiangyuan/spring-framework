@@ -37,10 +37,8 @@ public class SpringFactoriesLoaderTests {
 	public void loadFactoriesInCorrectOrder() {
 		List<DummyFactory> factories = SpringFactoriesLoader.loadFactories(DummyFactory.class, null);
 		assertThat(factories.size()).isEqualTo(2);
-		boolean condition1 = factories.get(0) instanceof MyDummyFactory1;
-		assertThat(condition1).isTrue();
-		boolean condition = factories.get(1) instanceof MyDummyFactory2;
-		assertThat(condition).isTrue();
+		assertThat(factories.get(0) instanceof MyDummyFactory1).isTrue();
+		assertThat(factories.get(1) instanceof MyDummyFactory2).isTrue();
 	}
 
 	@Test

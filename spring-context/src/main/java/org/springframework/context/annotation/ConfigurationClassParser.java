@@ -855,9 +855,9 @@ class ConfigurationClassParser {
 
 
 	private static class DeferredImportSelectorGrouping {
-
+		/** 这个类是被标记了 {@link Import} 的类 */
 		private final DeferredImportSelector.Group group;
-
+		/** 这个 List 存储的便是 {@link Import} 中的 value 数组 */
 		private final List<DeferredImportSelectorHolder> deferredImports = new ArrayList<>();
 
 		DeferredImportSelectorGrouping(Group group) {

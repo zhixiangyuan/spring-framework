@@ -17,6 +17,10 @@
 package org.springframework.context;
 
 /**
+ * 这是一个回调接口，用于在 ConfigurableApplicationContext 的 refresh 方法执行之前去执行一些初始化的操作
+ *
+ * 它的使用场景，例如说 Web 应用中需要注册属性，或者激活 Profiles
+ *
  * Callback interface for initializing a Spring {@link ConfigurableApplicationContext}
  * prior to being {@linkplain ConfigurableApplicationContext#refresh() refreshed}.
  *

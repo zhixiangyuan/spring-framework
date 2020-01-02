@@ -439,6 +439,9 @@ public @interface Configuration {
 	String value() default "";
 
 	/**
+	 * 是否通过代理的方式来创建配置类，proxyBeanMethods 为 false 时，便不会通过代理来创建配置类，
+	 * 主要是为了提高性能。
+	 *
 	 * Specify whether {@code @Bean} methods should get proxied in order to enforce
 	 * bean lifecycle behavior, e.g. to return shared singleton bean instances even
 	 * in case of direct {@code @Bean} method calls in user code. This feature

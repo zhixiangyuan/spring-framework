@@ -28,6 +28,8 @@ import org.springframework.lang.Nullable;
  * earliest moment that the {@link ServletContext} and (optionally) {@link ServletConfig}
  * become available.
  *
+ * 提供配置 Servlet 上下文和 Servlet 参数的功能
+ *
  * @author Chris Beams
  * @since 3.1.2
  * @see ConfigurableWebApplicationContext#getEnvironment()

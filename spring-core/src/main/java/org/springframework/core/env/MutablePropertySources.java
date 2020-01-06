@@ -124,6 +124,7 @@ public class MutablePropertySources implements PropertySources {
 	public void addAfter(String relativePropertySourceName, PropertySource<?> propertySource) {
 		assertLegalRelativeAddition(relativePropertySourceName, propertySource);
 		removeIfPresent(propertySource);
+		// 根据 relativePropertySourceName 来决定插入的索引位置
 		int index = assertPresentAndGetIndex(relativePropertySourceName);
 		addAtIndex(index + 1, propertySource);
 	}

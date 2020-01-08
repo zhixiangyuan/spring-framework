@@ -107,6 +107,7 @@ public class ResolvableType implements Serializable {
 
 	/**
 	 * The {@code VariableResolver} to use or {@code null} if no resolver is available.
+	 * todo 这个字段似乎是用来存父类的
 	 */
 	@Nullable
 	private final VariableResolver variableResolver;

@@ -61,6 +61,9 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  *
  * <p>In this package for access to package-local converter implementations.
  *
+ * 对于 Spring 的这一套类型转换体系应该更加适用于不定类型的转换，对与确定类型的转换我们可能
+ * 直接进行强转更加合理
+ *
  * @author Keith Donald
  * @author Juergen Hoeller
  * @author Phillip Webb

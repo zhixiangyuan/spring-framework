@@ -70,6 +70,11 @@ public class GenericConversionService implements ConfigurableConversionService {
 	/**
 	 * Used as a cache entry when no converter is available.
 	 * This converter is never returned.
+	 *
+	 * 使用这个不匹配的目的是因为，如果某两个类型第一次匹配失败，那么
+	 * 再次匹配依然会失败，所以在匹配失败后将状态保存为 NO_MATCH，那
+	 * 么下一次请求的时候直接查找到缓存的 NO_MATCH，就知道这两个类型
+	 * 不能匹配了
 	 */
 	private static final GenericConverter NO_MATCH = new NoOpConverter("NO_MATCH");
 
@@ -178,19 +183,27 @@ public class GenericConversionService implements ConfigurableConversionService {
 	@Nullable
 	public Object convert(@Nullable Object source, @Nullable TypeDescriptor sourceType, TypeDescriptor targetType) {
 		Assert.notNull(targetType, "Target type to convert to cannot be null");
+		// 如果 sourceType 为空，则直接处理结果
 		if (sourceType == null) {
 			Assert.isTrue(source == null, "Source must be [null] if source type == [null]");
+			// 这里的处理结果就是返回了 targetType 本身，如果 targetType 是原始类型则返回其包装类型
 			return handleResult(null, targetType, convertNullSource(null, targetType));
 		}
 		if (source != null && !sourceType.getObjectType().isInstance(source)) {
+			// 如果 sourceType 给出的类型不是 source 对象的类型，则说明传入的参数有错，抛出异常
 			throw new IllegalArgumentException("Source to convert from must be an instance of [" +
 					sourceType + "]; instead it was a [" + source.getClass().getName() + "]");
 		}
+		// 获得对应的 GenericConverter 对象
 		GenericConverter converter = getConverter(sourceType, targetType);
+		// 如果 converter 非空，则进行转换，然后再处理结果
 		if (converter != null) {
+			// 执行转换
 			Object result = ConversionUtils.invokeConverter(converter, source, sourceType, targetType);
+			// 处理器结果
 			return handleResult(sourceType, targetType, result);
 		}
+		// 处理 converter 为空的情况
 		return handleConverterNotFound(source, sourceType, targetType);
 	}
 
@@ -472,6 +485,7 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 		@Override
 		public int hashCode() {
+			// TypeDescriptor 中的 hashcode 用 Class 的 hashcode 覆写过，所以 TypeDescriptor 是唯一的
 			return (this.sourceType.hashCode() * 29 + this.targetType.hashCode());
 		}
 

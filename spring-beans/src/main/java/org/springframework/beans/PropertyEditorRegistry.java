@@ -27,6 +27,8 @@ import org.springframework.lang.Nullable;
  * <p>Extended by {@link BeanWrapper}; implemented by {@link BeanWrapperImpl}
  * and {@link org.springframework.validation.DataBinder}.
  *
+ * 实现了这个接口则表示其内部有注册相关的属性编辑器，那么则说明该类可以直接对属性进行编辑转换
+ *
  * @author Juergen Hoeller
  * @since 1.2.6
  * @see java.beans.PropertyEditor

@@ -302,7 +302,9 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 	@Nullable
 	private ResolvableType[] getRequiredTypeInfo(Class<?> converterClass, Class<?> genericIfc) {
-		ResolvableType resolvableType = ResolvableType.forClass(converterClass).as(genericIfc);
+		ResolvableType resolvableType =
+				// converterClass 类是实现了 genericIfc 范型接口，如果实现了则返回该范型接口
+				ResolvableType.forClass(converterClass).as(genericIfc);
 		ResolvableType[] generics = resolvableType.getGenerics();
 		if (generics.length < 2) {
 			return null;

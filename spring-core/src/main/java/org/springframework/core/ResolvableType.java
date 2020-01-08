@@ -128,7 +128,7 @@ public class ResolvableType implements Serializable {
 
 	@Nullable
 	private volatile ResolvableType[] interfaces;
-
+	/** 存放范型的 ResolvableType 类型 */
 	@Nullable
 	private volatile ResolvableType[] generics;
 

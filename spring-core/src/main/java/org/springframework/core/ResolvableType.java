@@ -121,6 +121,7 @@ public class ResolvableType implements Serializable {
 	@Nullable
 	private final Integer hash;
 
+	/** ResolvableType 中实际存放的被溶解的类型 */
 	@Nullable
 	private Class<?> resolved;
 

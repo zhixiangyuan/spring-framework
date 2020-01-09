@@ -160,8 +160,8 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	public Object proceed() throws Throwable {
 		//	We start with an index of -1 and increment early.
 		if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
-			// 如果这里的 if 成立，则说明 this.interceptorsAndDynamicMethodMatchers.size() == 0
-			// 没有拦截器
+			// 如果这里的 if 成立，有两种可能，一是当 this.interceptorsAndDynamicMethodMatchers.size() == 0 时，
+			// 说明没有拦截器；二是当其不为 0，则说明已经执行过所有的拦截器了
 			return invokeJoinpoint();
 		}
 

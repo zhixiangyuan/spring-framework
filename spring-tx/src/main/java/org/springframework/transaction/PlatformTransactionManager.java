@@ -55,6 +55,13 @@ public interface PlatformTransactionManager extends TransactionManager {
 	 * <p>An exception to the above rule is the read-only flag, which should be
 	 * ignored if no explicit read-only mode is supported. Essentially, the
 	 * read-only flag is just a hint for potential optimization.
+	 *
+	 * 为什么这里是获取事务呢？因为如果当前已经有事务了，则不会进行创建，一般来说会跟当前线程进行绑定。
+	 * 如果不存在事务，则进行创建。
+	 *
+	 * 为什么返回的是 TransactionStatus 对象？在 TransactionStatus 中，不仅仅包含事务属性，还包含事务的
+	 * 其他信息，例如是否只读、是否为新创建的事务等等。
+	 *
 	 * @param definition the TransactionDefinition instance (can be {@code null} for defaults),
 	 * describing propagation behavior, isolation level, timeout etc.
 	 * @return transaction status object representing the new or current transaction
@@ -86,6 +93,11 @@ public interface PlatformTransactionManager extends TransactionManager {
 	 * database right before commit, with the resulting DataAccessException
 	 * causing the transaction to fail. The original exception will be
 	 * propagated to the caller of this commit method in such a case.
+	 *
+	 * 为什么这里传入参数有 TransactionStatus，同时在提交的时候需要根据 TransactionStatus 的情况提交
+	 * 事务，因为如果 A 调用了 B，然后这两个方法上面都有 @Transactional 方法，那么在 B 方法执行结束后是
+	 * 是不能提交事务的，必须等待 A 执行完毕之后才能提交事务。
+	 *
 	 * @param status object returned by the {@code getTransaction} method
 	 * @throws UnexpectedRollbackException in case of an unexpected rollback
 	 * that the transaction coordinator initiated
@@ -109,6 +121,9 @@ public interface PlatformTransactionManager extends TransactionManager {
 	 * The transaction will already have been completed and cleaned up when commit
 	 * returns, even in case of a commit exception. Consequently, a rollback call
 	 * after commit failure will lead to an IllegalTransactionStateException.
+	 *
+	 * 为什么需要根据 status 的情况进行回滚？原因同 commit
+	 *
 	 * @param status object returned by the {@code getTransaction} method
 	 * @throws TransactionSystemException in case of rollback or system errors
 	 * (typically caused by fundamental resource failures)

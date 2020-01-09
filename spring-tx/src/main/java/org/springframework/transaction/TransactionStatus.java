@@ -29,6 +29,8 @@ import java.io.Flushable;
  * to savepoint management facilities. Note that savepoint management
  * is only available if supported by the underlying transaction manager.
  *
+ * TransactionStatus 接口，记录事务的状态，不仅仅包含事务本身，还包含事务的其它信息
+ *
  * @author Juergen Hoeller
  * @since 27.03.2003
  * @see #setRollbackOnly()
@@ -44,6 +46,11 @@ public interface TransactionStatus extends TransactionExecution, SavepointManage
 	 * <p>This method is mainly here for diagnostic purposes, alongside
 	 * {@link #isNewTransaction()}. For programmatic handling of custom
 	 * savepoints, use the operations provided by {@link SavepointManager}.
+	 *
+	 * 是否有 Savepoint
+	 *
+	 * 在 {@link TransactionDefinition#PROPAGATION_NESTED} 传播级别使用。
+	 *
 	 * @see #isNewTransaction()
 	 * @see #createSavepoint()
 	 * @see #rollbackToSavepoint(Object)
@@ -58,6 +65,8 @@ public interface TransactionStatus extends TransactionExecution, SavepointManage
 	 * transaction manager does not have a flush concept. A flush signal may
 	 * get applied to the primary resource or to transaction synchronizations,
 	 * depending on the underlying resource.
+	 *
+	 * 执行 flush 操作
 	 */
 	@Override
 	void flush();

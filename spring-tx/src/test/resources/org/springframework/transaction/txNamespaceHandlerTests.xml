@@ -7,8 +7,10 @@
 				http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 				http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
+	<tx:annotation-driven proxy-target-class="true" order="0" />
+
 	<aop:config>
-		<aop:advisor pointcut="execution(* *..ITestBean.*(..))" advice-ref="txAdvice"/>
+		<aop:advisor pointcut="execution(* *..ITestBean.*(..))" advice-ref="txAdvice" order="1"/>
 	</aop:config>
 
 	<tx:advice id="txAdvice">
@@ -29,5 +31,7 @@
 	<bean id="transactionManager" class="org.springframework.tests.transaction.CallCountingTransactionManager"/>
 
 	<bean id="testBean" class="org.springframework.tests.sample.beans.TestBean"/>
+
+	<bean id="testBean2" class="org.springframework.transaction.TestBean2" />
 
 </beans>

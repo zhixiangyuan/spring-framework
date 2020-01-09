@@ -60,6 +60,7 @@ public class TxNamespaceHandlerTests {
 		assertThat(AopUtils.isAopProxy(bean)).as("testBean is not a proxy").isTrue();
 	}
 
+	/** 事务的提交 */
 	@Test
 	public void invokeTransactional() {
 		ITestBean testBean = getTestBean();
@@ -83,6 +84,7 @@ public class TxNamespaceHandlerTests {
 		assertThat(ptm.rollbacks).as("Should have 1 rolled back transaction").isEqualTo(1);
 	}
 
+	/** 事务的回滚 */
 	@Test
 	public void rollbackRules() {
 		TransactionInterceptor txInterceptor = (TransactionInterceptor) context.getBean("txRollbackAdvice");
@@ -92,6 +94,17 @@ public class TxNamespaceHandlerTests {
 
 		txAttr = txAttrSource.getTransactionAttribute(setAgeMethod, ITestBean.class);
 		assertThat(txAttr.rollbackOn(new RuntimeException())).as("should not rollback on RuntimeException").isFalse();
+	}
+
+	@Test
+	public void invokeTransactional2() {
+		ITestBean bean = getTestBean2();
+		bean.returnsThis(); // 测试，我们对 @Transactional 注解的效果
+//        bean.getAge(); // 测试，原有 xml 配置的事务的效果
+	}
+
+	private ITestBean getTestBean2() {
+		return (ITestBean) context.getBean("testBean2");
 	}
 
 	private ITestBean getTestBean() {

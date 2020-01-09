@@ -87,12 +87,16 @@ public final class ExposeInvocationInterceptor implements MethodInterceptor, Pri
 
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
+		// 从 ThreadLocal 中取出值
 		MethodInvocation oldInvocation = invocation.get();
+		// 将 mi 放入 ThreadLocal
 		invocation.set(mi);
 		try {
+			// 继续执行调用链
 			return mi.proceed();
 		}
 		finally {
+			// 将 ThreadLocal 还原
 			invocation.set(oldInvocation);
 		}
 	}

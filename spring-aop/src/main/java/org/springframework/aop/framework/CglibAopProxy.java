@@ -662,6 +662,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 			Object oldProxy = null;
 			boolean setProxyContext = false;
 			Object target = null;
+			// 从 advised 中获取 targetSource，targetSource 中对未代理的原对象的一层包装
 			TargetSource targetSource = this.advised.getTargetSource();
 			try {
 				if (this.advised.exposeProxy) {
@@ -670,13 +671,18 @@ class CglibAopProxy implements AopProxy, Serializable {
 					setProxyContext = true;
 				}
 				// Get as late as possible to minimize the time we "own" the target, in case it comes from a pool...
+				// 获取未被代理的原对象
 				target = targetSource.getTarget();
+				// 获取原对象的类型
 				Class<?> targetClass = (target != null ? target.getClass() : null);
+				// 根据被调用的方法和原对象的类型去寻找拦截器
+				// 这里可能找到事务拦截器之类的
 				List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
 				Object retVal;
 				// Check whether we only have one InvokerInterceptor: that is,
 				// no real advice, but just reflective invocation of the target.
 				if (chain.isEmpty() && Modifier.isPublic(method.getModifiers())) {
+					// 如果拦截器为空直接调用原方法即可
 					// We can skip creating a MethodInvocation: just invoke the target directly.
 					// Note that the final invoker must be an InvokerInterceptor, so we know
 					// it does nothing but a reflective operation on the target, and no hot
@@ -685,6 +691,8 @@ class CglibAopProxy implements AopProxy, Serializable {
 					retVal = methodProxy.invoke(target, argsToUse);
 				}
 				else {
+					// 这里先创建一个 CglibMethodInvocation，对参数进行了包装
+					// 然后调用 proceed 方法向下执行调用链
 					// We need to create a method invocation...
 					retVal = new CglibMethodInvocation(proxy, target, method, args, targetClass, chain, methodProxy).proceed();
 				}

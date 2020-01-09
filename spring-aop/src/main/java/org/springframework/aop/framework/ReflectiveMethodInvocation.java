@@ -62,7 +62,7 @@ import org.springframework.lang.Nullable;
 public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Cloneable {
 
 	protected final Object proxy;
-
+	/** 需要被代理的原对象 */
 	@Nullable
 	protected final Object target;
 
@@ -160,10 +160,13 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	public Object proceed() throws Throwable {
 		//	We start with an index of -1 and increment early.
 		if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
+			// 如果这里的 if 成立，则说明 this.interceptorsAndDynamicMethodMatchers.size() == 0
+			// 没有拦截器
 			return invokeJoinpoint();
 		}
 
 		Object interceptorOrInterceptionAdvice =
+				// 获取当前需要执行的拦截器
 				this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
 		if (interceptorOrInterceptionAdvice instanceof InterceptorAndDynamicMethodMatcher) {
 			// Evaluate dynamic method matcher here: static part will already have
@@ -183,6 +186,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 		else {
 			// It's an interceptor, so we just invoke it: The pointcut will have
 			// been evaluated statically before this object was constructed.
+			// 直接调用拦截器
 			return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
 		}
 	}

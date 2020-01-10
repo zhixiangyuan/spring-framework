@@ -80,6 +80,8 @@ import org.springframework.util.StringUtils;
  * or if none matches, a {@link org.springframework.aop.target.SingletonTargetSource}
  * will be used by default to wrap the target bean instance.
  *
+ * Spring 为 Spring AOP 模块暴露的可扩展抽象类，也是 AOP 中最核心的抽象类。Nepxion Matrix 框架便是基于此类对 AOP 进行扩展和增强
+ *
  * @author Juergen Hoeller
  * @author Rod Johnson
  * @author Rob Harrop

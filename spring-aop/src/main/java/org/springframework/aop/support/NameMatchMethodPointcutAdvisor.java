@@ -25,6 +25,8 @@ import org.springframework.aop.Pointcut;
  * Convenient class for name-match method pointcuts that hold an Advice,
  * making them an Advisor.
  *
+ * 方法名称切面顾问，内部封装了 NameMatchMethodPointcut，通过设置方法名称模糊匹配规则和通知来实现切面功能
+ *
  * @author Juergen Hoeller
  * @author Rob Harrop
  * @see NameMatchMethodPointcut

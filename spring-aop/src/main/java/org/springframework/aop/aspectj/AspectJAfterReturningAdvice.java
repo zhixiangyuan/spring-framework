@@ -29,6 +29,11 @@ import org.springframework.util.TypeUtils;
 /**
  * Spring AOP advice wrapping an AspectJ after-returning advice method.
  *
+ * 后置通知，AspectJ 中 afterReturning 属性对应的通知（@AfterReturning 标注的方法会被解析成该通知），
+ * 在切面方法执行之后执行，如果有异常，则不执行
+ *
+ * 该通知与 AspectJMethodBeforeAdvice 对应
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Ramnivas Laddad

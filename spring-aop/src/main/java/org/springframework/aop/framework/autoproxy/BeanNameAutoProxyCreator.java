@@ -36,6 +36,9 @@ import org.springframework.util.StringUtils;
  * interceptor names to apply to all identified beans, via the
  * "interceptorNames" property.
  *
+ * 根据指定名称创建代理对象（阿里大名鼎鼎的连接池框架 druid 也基于此类做了扩展）。
+ * 通过设置 advisor，可以对指定的 beanName 进行代理。支持模糊匹配
+ *
  * @author Juergen Hoeller
  * @since 10.10.2003
  * @see #setBeanNames

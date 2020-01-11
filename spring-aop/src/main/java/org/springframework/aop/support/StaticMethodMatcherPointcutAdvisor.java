@@ -29,6 +29,8 @@ import org.springframework.util.Assert;
  * Convenient base class for Advisors that are also static pointcuts.
  * Serializable if Advice and subclass are.
  *
+ * 静态方法匹配切面顾问，同未抽象类，扩展了切面排序方法。
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  */

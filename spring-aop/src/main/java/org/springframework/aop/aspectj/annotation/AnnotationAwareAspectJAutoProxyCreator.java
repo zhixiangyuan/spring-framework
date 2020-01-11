@@ -41,6 +41,9 @@ import org.springframework.util.Assert;
  * <p>Processing of Spring Advisors follows the rules established in
  * {@link org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator}.
  *
+ * 目前最常用的 AOP 使用方式。spring aop 开启注解方式之后，该类会扫描所有 @Aspect() 注释的类，
+ * 生成对应的 adviosr。目前 SpringBoot 框架中默认支持的方式，自动配置
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @since 2.0

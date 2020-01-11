@@ -38,6 +38,9 @@ import org.springframework.util.ClassUtils;
  * subclass that exposes AspectJ's invocation context and understands AspectJ's rules
  * for advice precedence when multiple pieces of advice come from the same aspect.
  *
+ * Aspectj 的实现方式，也是 Spring Aop 中最常用的实现方式，如果用注解方式，
+ * 则用其子类 AnnotationAwareAspectJAutoProxyCreator
+ *
  * @author Adrian Colyer
  * @author Juergen Hoeller
  * @author Ramnivas Laddad

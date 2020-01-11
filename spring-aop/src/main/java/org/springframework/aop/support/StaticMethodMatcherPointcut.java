@@ -27,6 +27,9 @@ import org.springframework.aop.Pointcut;
  * <p>The {@link #setClassFilter "classFilter"} property can be set to customize
  * {@link ClassFilter} behavior. The default is {@link ClassFilter#TRUE}.
  *
+ * 静态方法切面，抽象类。定义了一个 classFilter，通过重写 getClassFilter() 方法来指定切面规则。
+ * 另外实现了 StaticMethodMatcher 接口，通过重写 matches 来指定方法匹配规则
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  */

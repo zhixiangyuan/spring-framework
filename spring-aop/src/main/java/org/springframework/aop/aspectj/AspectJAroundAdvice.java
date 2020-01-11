@@ -30,6 +30,8 @@ import org.springframework.aop.ProxyMethodInvocation;
  * Spring AOP around advice (MethodInterceptor) that wraps
  * an AspectJ advice method. Exposes ProceedingJoinPoint.
  *
+ * 环绕通知，AspectJ 中 around 属性对应的通知（@Around 标注的方法会被解析成该通知），在切面方法执行前后执行
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @since 2.0

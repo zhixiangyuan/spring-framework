@@ -37,6 +37,8 @@ import org.springframework.lang.Nullable;
  * Internal implementation of AspectJPointcutAdvisor.
  * Note that there will be one instance of this advisor for each target method.
  *
+ * springboot 自动装配的顾问类型，也是最常用的一种顾问实现。在注解实现的切面中，所有 @Aspect 类，都会被解析成该对象
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @since 2.0

@@ -30,6 +30,8 @@ import org.springframework.lang.Nullable;
  * with any pointcut and advice type, except for introductions. There is
  * normally no need to subclass this class, or to implement custom Advisors.
  *
+ * 默认切面顾问，比较灵活。可自由组合切面和通知
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see #setPointcut

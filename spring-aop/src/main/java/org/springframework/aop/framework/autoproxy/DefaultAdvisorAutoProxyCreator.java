@@ -32,6 +32,8 @@ import org.springframework.lang.Nullable;
  * from the bean name by setting the {@code advisorBeanNamePrefix} property.
  * The separator (.) will also be used in this case.
  *
+ * AbstractAdvisorAutoProxyCreator 的默认实现类。可以单独使用，在框架中使用 AOP，尽量不要手动创建此对象
+ *
  * @author Rod Johnson
  * @author Rob Harrop
  */

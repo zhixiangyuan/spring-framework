@@ -25,6 +25,8 @@ import org.springframework.lang.Nullable;
 /**
  * Spring AOP advice that wraps an AspectJ before method.
  *
+ * 前置通知，AspectJ 中 before 属性对应的通知（@Before 标注的方法会被解析成该通知），在切面方法执行之前执行。
+ *
  * @author Rod Johnson
  * @author Adrian Colyer
  * @since 2.0

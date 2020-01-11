@@ -36,6 +36,9 @@ import org.springframework.util.ObjectUtils;
  * By default, {@link JdkRegexpMethodPointcut} will be used. To choose
  * a specific one, override the {@link #createPointcut} method.
  *
+ * 正则表达式切面顾问，可设置多个正则表达式规则，通过内部封装的
+ * JdkRegexpMethodPointcut 解析正则表达式
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see #setPattern

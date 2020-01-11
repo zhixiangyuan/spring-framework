@@ -42,6 +42,9 @@ import org.springframework.util.Assert;
  * Ordered interface will be considered as unordered; they will appear
  * at the end of the advisor chain in undefined order.
  *
+ * 功能比较强大，默认扫描所有 Advisor 的实现类。相对于根据 Bean 名称匹配，该类更加灵活。
+ * 动态的匹配每一个类，判断是否可以被代理，并寻找合适的增强类，以及生成代理类
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see #findCandidateAdvisors

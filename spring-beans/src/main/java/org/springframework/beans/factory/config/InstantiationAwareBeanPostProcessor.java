@@ -38,6 +38,8 @@ import org.springframework.lang.Nullable;
  * {@link InstantiationAwareBeanPostProcessorAdapter} in order to be shielded
  * from extensions to this interface.
  *
+ * InstantiationAwareBeanPostProcessor 的调用时机在 {@link BeanPostProcessor} 前面
+ *
  * @author Juergen Hoeller
  * @author Rod Johnson
  * @since 1.2

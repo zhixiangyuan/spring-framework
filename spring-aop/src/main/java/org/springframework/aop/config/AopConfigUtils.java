@@ -97,6 +97,8 @@ public abstract class AopConfigUtils {
 	public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessary(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
 
+		// 后面便是将 AnnotationAwareAspectJAutoProxyCreator 注册到 Spring 容器中
+		// AnnotationAwareAspectJAutoProxyCreator 同样是一个 BeanPostProcessor
 		return registerOrEscalateApcAsRequired(AnnotationAwareAspectJAutoProxyCreator.class, registry, source);
 	}
 

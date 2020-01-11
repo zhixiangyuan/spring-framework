@@ -516,6 +516,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// 实例化的前置处理
 			// 给 BeanPostProcessors 一个机会用来返回一个代理类而不是真正的类实例
 			// AOP 的功能就是基于这个地方
+			// 这里调用的 BeanPostProcessors 其实是 InstantiationAwareBeanPostProcessor
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {

@@ -83,7 +83,7 @@ public class AspectJAutoProxyCreatorTests {
 		assertThat(tb.getAge()).isEqualTo(102);
 		MethodInvokingFactoryBean factoryBean = (MethodInvokingFactoryBean) bf.getBean("&factoryBean");
 		assertThat(AopUtils.isAopProxy(factoryBean.getTargetObject())).isTrue();
-		assertThat(((ITestBean) factoryBean.getTargetObject()).getAge()).isEqualTo(68);
+		assertThat(((ITestBean) factoryBean.getTargetObject()).getAge()).isEqualTo(102);
 	}
 
 	@Test

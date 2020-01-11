@@ -251,9 +251,11 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		Object cacheKey = getCacheKey(beanClass, beanName);
 
 		if (!StringUtils.hasLength(beanName) || !this.targetSourcedBeans.contains(beanName)) {
+			// advisedBeans 用于存储不可代理的bean，如果包含直接返回
 			if (this.advisedBeans.containsKey(cacheKey)) {
 				return null;
 			}
+			// 判断当前 bean 是否可以被代理，然后存入 advisedBeans
 			if (isInfrastructureClass(beanClass) || shouldSkip(beanClass, beanName)) {
 				this.advisedBeans.put(cacheKey, Boolean.FALSE);
 				return null;
@@ -264,6 +266,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// Suppresses unnecessary default instantiation of the target bean:
 		// The TargetSource will handle target instances in a custom fashion.
 		// 可以看到这里同样有创建代理类的逻辑，但前提是对于相应的 bean 我们有自定义的 TargetSource 实现
+		// 到这里说明该 bean 可以被代理，所以去获取自定义目标类，如果没有定义，则跳过
 		TargetSource targetSource = getCustomTargetSource(beanClass, beanName);
 		if (targetSource != null) {
 			if (StringUtils.hasLength(beanName)) {
@@ -272,6 +275,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(beanClass, beanName, targetSource);
 			Object proxy = createProxy(beanClass, beanName, specificInterceptors, targetSource);
 			this.proxyTypes.put(cacheKey, proxy.getClass());
+			// 如果最终可以获得代理类，则返回代理类，直接执行实例化后置通知方法
 			return proxy;
 		}
 
@@ -309,6 +313,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			// 这里通过 beanClass 和 beanName 来获取 cacheKey
 			// 最终返回回来的 cacheKey 可能是 Class 类型的，也可能是 String 类型的 beanName
 			Object cacheKey = getCacheKey(bean.getClass(), beanName);
+			// 处理循环依赖的判断
 			if (this.earlyProxyReferences.remove(cacheKey) != bean) {
 				return wrapIfNecessary(bean, beanName, cacheKey);
 			}
@@ -393,6 +398,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 * @see #shouldSkip
 	 */
 	protected boolean isInfrastructureClass(Class<?> beanClass) {
+		// 判定当前 bean 是否是 Advice、Pointcut、Advisor、AopInfrastructureBean 等子类或实现类，如果是，则不能被代理
 		boolean retVal = Advice.class.isAssignableFrom(beanClass) ||
 				Pointcut.class.isAssignableFrom(beanClass) ||
 				Advisor.class.isAssignableFrom(beanClass) ||
@@ -417,6 +423,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 * @see org.springframework.beans.factory.config.AutowireCapableBeanFactory#ORIGINAL_INSTANCE_SUFFIX
 	 */
 	protected boolean shouldSkip(Class<?> beanClass, String beanName) {
+		// 获取所有的候选顾问类 Advisor
 		return AutoProxyUtils.isOriginalInstance(beanName, beanClass);
 	}
 
